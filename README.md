@@ -1,5 +1,7 @@
 This repo contains multiple tools to help with Pokemon TCG optimization.
 
+It runs at [professorsresearch.net](https://professorsresearch.net).
+
 ## API Server
 
 The API server provides a REST API for calculating prize odds from Pokemon TCG decklists.
