@@ -26,7 +26,7 @@ PORT=3000 make run
 #### Health Check
 
 ```bash
-curl http://localhost:8080/health
+curl http://localhost:8080/api/health
 ```
 
 #### Calculate Prize Odds
@@ -34,7 +34,7 @@ curl http://localhost:8080/health
 Calculate prize odds for a decklist:
 
 ```bash
-curl -X POST http://localhost:8080/prize-odds \
+curl -X POST http://localhost:8080/api/prize-odds \
   -H "Content-Type: application/json" \
   -d '{
     "decklist": "Pokémon: 12\n1 Bloodmoon Ursaluna ex PRE 168\n1 Hawlucha SVI 118\n4 Drakloak TWM 129\n4 Dreepy TWM 128\n1 Munkidori TWM 95\n3 Dragapult ex TWM 130\n1 Latias ex SSP 76\n2 Dusclops PRE 36\n2 Duskull SFA 18\n1 Fezandipiti ex SFA 38\n2 Budew PRE 4\n1 Dusknoir SFA 20\n\nTrainer: 11\n4 Ultra Ball SVI 196\n4 Buddy-Buddy Poffin TEF 144\n4 Lillie'\''s Determination MEG 119\n3 Counter Catcher PAR 160\n2 Jamming Tower TWM 153\n4 Iono PAL 185\n2 Night Stretcher SFA 61\n1 Professor Turo'\''s Scenario PRE 121\n1 Nest Ball SVI 181\n3 Boss'\''s Orders PAL 172\n2 Hilda WHT 84\n\nEnergy: 4\n1 Basic {R} Energy EVO 92\n2 Basic {P} Energy EVO 95\n3 Luminous Energy PAL 191\n1 Neo Upper Energy TEF 162\n\nTotal Cards: 60"
@@ -45,7 +45,7 @@ Or using a file with `jq`:
 
 ```bash
 jq -Rs '{decklist: .}' testdata/dragapult_MEG_1.txt | \
-  curl -X POST http://localhost:8080/prize-odds \
+  curl -X POST http://localhost:8080/api/prize-odds \
     -H "Content-Type: application/json" \
     -d @-
 ```
@@ -87,3 +87,7 @@ This writes:
 - `tournament.json`: metadata (ID, name, timestamp)
 - `decklists.json` + `decklists/*.txt`: parsed decklists (when present on the roster page)
 - `matches.json`: parsed match results (when present on the pairings page)
+
+## License
+
+Apache-2.0 (see `LICENSE`).

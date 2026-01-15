@@ -14,7 +14,10 @@ export default defineConfig({
     allowedHosts: ['web', 'localhost', '127.0.0.1'],
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || `http://${process.env.API_HOST || 'api'}:${process.env.PORT || '8080'}`,
+        // Default to localhost for non-Docker dev/test. Docker Compose sets VITE_API_URL and/or API_HOST.
+        target:
+          process.env.VITE_API_URL ||
+          `http://${process.env.API_HOST || 'localhost'}:${process.env.PORT || '8080'}`,
         changeOrigin: true,
       },
     },

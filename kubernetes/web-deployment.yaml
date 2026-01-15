@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: us-central1-docker.pkg.dev/zeitgeistlabs/us-central1-docker/professors-research-web:87674dc
+          image: us-central1-docker.pkg.dev/zeitgeistlabs/us-central1-docker/professors-research-web:0107561-dirty
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

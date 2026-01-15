@@ -1,4 +1,4 @@
-.PHONY: build run run-api test test-coverage test-ui clean help docker-build-api docker-build-web docker-build docker-push-api docker-push-web docker-push docker-auth security-audit security-audit-fix docker-down docker-down-test
+.PHONY: build run run-api test test-local test-coverage test-ui test-ui-local clean help docker-build-api docker-build-web docker-build docker-push-api docker-push-web docker-push docker-auth security-audit security-audit-fix docker-down docker-down-test
 
 # Build variables
 BINARY_NAME=api-server
@@ -42,24 +42,88 @@ run:
 	@echo "API server: http://localhost:$${PORT:-8080}"
 	@echo "Web dev server: http://localhost:5173"
 	@echo "Press Ctrl+C to stop both servers"
-	@PORT=$${PORT:-8080} docker compose -f docker-compose.dev.yml up --build
+	@echo "Cleaning up any existing dev containers that may be holding ports..."
+	@docker compose -f docker-compose.dev.yml down --remove-orphans 2>/dev/null || true
+	@docker rm -f professors-research-api-dev professors-research-web-dev 2>/dev/null || true
+	@PORT=$${PORT:-8080}; \
+	if command -v lsof >/dev/null 2>&1; then \
+		PIDS=""; \
+		for p in $$PORT 5173; do \
+			FOUND=$$(lsof -nP -tiTCP:$$p -sTCP:LISTEN 2>/dev/null || true); \
+			if [ -n "$$FOUND" ]; then \
+				PIDS="$$PIDS $$FOUND"; \
+			fi; \
+		done; \
+		if [ -n "$$PIDS" ]; then \
+			if [ "$${FORCE_KILL_PORTS:-0}" = "1" ]; then \
+				echo "Ports in use; FORCE_KILL_PORTS=1 set, killing:$$PIDS"; \
+				kill $$PIDS 2>/dev/null || true; \
+				sleep 1; \
+			else \
+				echo "Error: required ports are in use (PORT=$$PORT and/or 5173)."; \
+				echo "Set FORCE_KILL_PORTS=1 to auto-kill local listeners, or change PORT (e.g. PORT=18080 make run)."; \
+				for p in $$PORT 5173; do \
+					echo "--- listeners on $$p ---"; \
+					lsof -nP -iTCP:$$p -sTCP:LISTEN 2>/dev/null || true; \
+				done; \
+				exit 1; \
+			fi; \
+		fi; \
+	fi; \
+	PORT=$$PORT docker compose -f docker-compose.dev.yml up --build
 
 ## run-api: Run only the API server in Docker
 run-api:
 	@echo "Starting API server in Docker container..."
 	@echo "API server: http://localhost:$${PORT:-8080}"
 	@echo "Press Ctrl+C to stop the server"
-	@PORT=$${PORT:-8080} docker compose -f docker-compose.dev.yml up --build api
+	@echo "Cleaning up any existing dev containers that may be holding the API port..."
+	@docker compose -f docker-compose.dev.yml down --remove-orphans 2>/dev/null || true
+	@docker rm -f professors-research-api-dev 2>/dev/null || true
+	@PORT=$${PORT:-8080}; \
+	if command -v lsof >/dev/null 2>&1; then \
+		FOUND=$$(lsof -nP -tiTCP:$$PORT -sTCP:LISTEN 2>/dev/null || true); \
+		if [ -n "$$FOUND" ]; then \
+			if [ "$${FORCE_KILL_PORTS:-0}" = "1" ]; then \
+				echo "Port $$PORT in use; FORCE_KILL_PORTS=1 set, killing: $$FOUND"; \
+				kill $$FOUND 2>/dev/null || true; \
+				sleep 1; \
+			else \
+				echo "Error: port $$PORT is in use."; \
+				echo "Set FORCE_KILL_PORTS=1 to auto-kill local listeners, or change PORT (e.g. PORT=18080 make run-api)."; \
+				lsof -nP -iTCP:$$PORT -sTCP:LISTEN 2>/dev/null || true; \
+				exit 1; \
+			fi; \
+		fi; \
+	fi; \
+	PORT=$$PORT docker compose -f docker-compose.dev.yml up --build api
 
 ## test: Run all Go tests in Docker
 test:
-	@echo "Running Go tests in Docker container..."
-	@docker compose -f docker-compose.dev.yml run --rm --no-deps api go test -v ./internal/... ./pkg/...
+	@echo "Running Go tests..."
+	@if docker info >/dev/null 2>&1; then \
+		echo "Using Docker..."; \
+		docker compose -f docker-compose.dev.yml run --rm --no-deps api go test -v ./internal/... ./pkg/...; \
+	else \
+		echo "Docker not available; running tests locally (go test)."; \
+		go test -v ./internal/... ./pkg/...; \
+	fi
+
+## test-local: Run all Go tests locally (no Docker required)
+test-local:
+	@echo "Running Go tests locally..."
+	@go test -v ./internal/... ./pkg/...
 
 ## test-coverage: Run tests with coverage in Docker
 test-coverage:
-	@echo "Running tests with coverage in Docker container..."
-	@docker compose -f docker-compose.dev.yml run --rm --no-deps api sh -c "go test -v -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html"
+	@echo "Running tests with coverage..."
+	@if docker info >/dev/null 2>&1; then \
+		echo "Using Docker..."; \
+		docker compose -f docker-compose.dev.yml run --rm --no-deps api sh -c "go test -v -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html"; \
+	else \
+		echo "Docker not available; running coverage locally."; \
+		go test -v -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html; \
+	fi
 	@echo "Coverage report generated: coverage.html"
 
 ## test-ui: Run UI acceptance tests in Docker (starts API and web servers automatically)
@@ -74,6 +138,27 @@ test-ui:
 	docker rm -f professors-research-api-test professors-research-web-test professors-research-test-runner 2>/dev/null || true; \
 	echo "Test containers and networks cleaned up"; \
 	exit $$EXIT_CODE
+
+## test-ui-local: Run UI acceptance tests without Docker (starts API locally; Playwright starts Vite dev server)
+test-ui-local:
+	@echo "Running UI acceptance tests locally (no Docker)..."
+	@echo "Building and starting API server on :18080 (override with API_PORT=...)..."
+	@set -e; \
+	API_PORT=$${API_PORT:-18080}; \
+	API_URL="http://localhost:$$API_PORT"; \
+	go build -o ./bin/api-server ./cmd/api-server; \
+	(PORT=$$API_PORT ./bin/api-server >/tmp/professors-research-api.log 2>&1 & echo $$! > /tmp/professors-research-api.pid); \
+	trap 'kill $$(cat /tmp/professors-research-api.pid) 2>/dev/null || true; rm -f /tmp/professors-research-api.pid' EXIT INT TERM; \
+	echo "Waiting for API to finish loading card cache..."; \
+	for i in $$(seq 1 120); do \
+		if curl -s "$$API_URL/api/health" | grep -q '"status":"ok"'; then \
+			break; \
+		fi; \
+		sleep 1; \
+	done; \
+	curl -s "$$API_URL/api/health" | grep -q '"status":"ok"' || (echo "API did not become ready. See /tmp/professors-research-api.log" && exit 1); \
+	echo "Running Playwright tests (chromium only; run 'npx playwright install' for webkit locally)..."; \
+	cd web && VITE_API_URL=$$API_URL npm test -- --project=chromium
 
 ## docker-build-api: Build the API server Docker image
 docker-build-api:

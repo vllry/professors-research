@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
+import BottomBar from './components/BottomBar';
 import Home from './pages/Home';
 import Prizes from './pages/Prizes';
 import Start from './pages/Start';
@@ -16,6 +17,7 @@ function App() {
             <Route path="/start" element={<Start />} />
           </Routes>
         </main>
+        <BottomBar />
       </div>
     </BrowserRouter>
   );
