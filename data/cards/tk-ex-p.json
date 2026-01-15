@@ -1,0 +1,153 @@
+{
+  "cards": [
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "tk-ex-p-11",
+      "illustrator": "",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "11",
+      "name": "Lightning Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": {
+          "normal": {
+            "directLowPrice": null,
+            "highPrice": 1.13,
+            "lowPrice": 0.15,
+            "marketPrice": 0.75,
+            "midPrice": 0.45
+          },
+          "unit": "USD",
+          "updated": "2025-11-19T20:05:32.000Z"
+        }
+      },
+      "rarity": "None",
+      "set": {
+        "cardCount": {
+          "official": 12,
+          "total": 12
+        },
+        "id": "tk-ex-p",
+        "name": "EX trainer Kit 2 (Plusle)",
+        "symbol": "https://assets.tcgdex.net/univ/tk/tk-ex-p/symbol"
+      },
+      "stage": "Basic",
+      "updated": "2025-08-16T20:39:55Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": true,
+        "normal": true,
+        "reverse": true,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal"
+        },
+        {
+          "size": "standard",
+          "type": "reverse"
+        },
+        {
+          "size": "standard",
+          "type": "holo"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "tk-ex-p-12",
+      "illustrator": "",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "12",
+      "name": "Psychic Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": {
+          "normal": {
+            "directLowPrice": null,
+            "highPrice": 2,
+            "lowPrice": 0.1,
+            "marketPrice": 0.52,
+            "midPrice": 0.37
+          },
+          "unit": "USD",
+          "updated": "2025-11-19T20:05:32.000Z"
+        }
+      },
+      "rarity": "None",
+      "set": {
+        "cardCount": {
+          "official": 12,
+          "total": 12
+        },
+        "id": "tk-ex-p",
+        "name": "EX trainer Kit 2 (Plusle)",
+        "symbol": "https://assets.tcgdex.net/univ/tk/tk-ex-p/symbol"
+      },
+      "stage": "Basic",
+      "updated": "2025-08-16T20:39:55Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": true,
+        "normal": true,
+        "reverse": true,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal"
+        },
+        {
+          "size": "standard",
+          "type": "reverse"
+        },
+        {
+          "size": "standard",
+          "type": "holo"
+        }
+      ]
+    }
+  ],
+  "downloadedAt": "2025-12-11T02:56:47Z",
+  "failedCardIDs": null,
+  "failedCardIDs_count": 0,
+  "minRegulationMark": "G",
+  "physicalSetCode": "TK2P",
+  "set": {
+    "abbreviation": {
+      "official": "TK2P"
+    },
+    "cardCount": {
+      "firstEd": 0,
+      "holo": 0,
+      "normal": 0,
+      "official": 12,
+      "reverse": 0,
+      "total": 12
+    },
+    "id": "tk-ex-p",
+    "legal": {
+      "expanded": false,
+      "standard": false
+    },
+    "name": "EX trainer Kit 2 (Plusle)",
+    "releaseDate": "2006-03-01",
+    "serie": {
+      "id": "tk",
+      "name": "Trainer kits"
+    },
+    "symbol": "https://assets.tcgdex.net/univ/tk/tk-ex-p/symbol"
+  },
+  "source": "https://api.tcgdex.net/v2/en"
+}

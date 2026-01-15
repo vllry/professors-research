@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+---
+
+ALWAYS use make commands to run tests (eg `make test-ui`)
+
+Aim for 90% unit test coverage
+
+Always run new tests
+
+If tests or the test harness fails, fix it. You are responsible.
+
+Update documentation and Makefile when needed.
+
+You are responsible for problems you find, even if you aren't working on them.

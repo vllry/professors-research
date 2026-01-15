@@ -1,0 +1,37 @@
+# Build artifacts
+bin/
+api-server
+tmp/
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+*_test.go
+testdata/
+
+# Development files
+.cursor/
+.vscode/
+.idea/
+
+# Example files
+example_*.yaml
+curl_example.sh
+CURL_EXAMPLE.md
+
+# Review and validation docs
+internal/prize-odds/REVIEW.md
+internal/prize-odds/VALIDATION.md
+
+# Makefile (not needed in container)
+Makefile
+
+
+
+

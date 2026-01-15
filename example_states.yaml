@@ -1,0 +1,39 @@
+accept:
+  - name: Gardie setup
+    active: Budew PRE 4
+    bench:
+    - Dreepy TWM 128
+    - Duskull SFA 18
+    hand:
+      - anyOf:
+        - Professor's Research
+        - Lillie's Determination
+        - Iono
+        - Drakloak TWM 129
+  - name: Mirror setup
+    active: Budew PRE 4
+    bench:
+    - Dreepy TWM 128
+    - Dreepy TWM 128
+    - Duskull SFA 18
+    hand:
+      - anyOf:
+        - Professor's Research
+        - Lillie's Determination
+        - Iono
+        - Drakloak TWM 129
+      - anyOf:
+        - Luminous
+        - Psychic
+        - Fire
+  - name: Workable
+    active: Budew PRE 4
+    bench:
+    - Dreepy TWM 128
+    hand:
+      - anyOf:
+        - Professor's Research
+        - Lillie's Determination
+        - Iono
+        - Drakloak TWM 129
+        - Ultra Ball

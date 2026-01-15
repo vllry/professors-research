@@ -1,0 +1,263 @@
+[
+  {
+    "player": "4....0 Luca R. [US]",
+    "cards": [
+      {
+        "count": 3,
+        "card": {
+          "name": "Ultra Ball",
+          "setCode": "BRS",
+          "number": "150"
+        }
+      },
+      {
+        "count": 3,
+        "card": {
+          "name": "Fighting Energy - Basic",
+          "setCode": "CRE",
+          "number": "233"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Energy Retrieval",
+          "setCode": "CRZ",
+          "number": "127"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Energy Switch",
+          "setCode": "CRZ",
+          "number": "129"
+        }
+      },
+      {
+        "count": 5,
+        "card": {
+          "name": "Grass Energy - Basic",
+          "setCode": "CRZ",
+          "number": "152"
+        }
+      },
+      {
+        "count": 3,
+        "card": {
+          "name": "Lightning Energy - Basic",
+          "setCode": "CRZ",
+          "number": "155"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Judge",
+          "setCode": "DRI",
+          "number": "167"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Jamming Tower",
+          "setCode": "DRI",
+          "number": "243"
+        }
+      },
+      {
+        "count": 2,
+        "card": {
+          "name": "Boss's Orders",
+          "setCode": "MEG",
+          "number": "114"
+        }
+      },
+      {
+        "count": 2,
+        "card": {
+          "name": "Night Stretcher",
+          "setCode": "MEG",
+          "number": "173"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Ditto",
+          "setCode": "MEW",
+          "number": "132"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Mew ex",
+          "setCode": "MEW",
+          "number": "151"
+        }
+      },
+      {
+        "count": 4,
+        "card": {
+          "name": "Nest Ball",
+          "setCode": "PAF",
+          "number": "84"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Slither Wing",
+          "setCode": "PAR",
+          "number": "107"
+        }
+      },
+      {
+        "count": 3,
+        "card": {
+          "name": "Earthen Vessel",
+          "setCode": "PAR",
+          "number": "163"
+        }
+      },
+      {
+        "count": 4,
+        "card": {
+          "name": "Professor Sada's Vitality",
+          "setCode": "PAR",
+          "number": "170"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Professor Turo's Scenario",
+          "setCode": "PAR",
+          "number": "171"
+        }
+      },
+      {
+        "count": 2,
+        "card": {
+          "name": "Crispin",
+          "setCode": "PRE",
+          "number": "105"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Prime Catcher - ACESPEC",
+          "setCode": "PRE",
+          "number": "119"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Teal Mask Ogerpon ex",
+          "setCode": "PRE",
+          "number": "12"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Fan Rotom",
+          "setCode": "PRE",
+          "number": "85"
+        }
+      },
+      {
+        "count": 2,
+        "card": {
+          "name": "Area Zero Underdepths",
+          "setCode": "PRE",
+          "number": "94"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Raging Bolt",
+          "setCode": "SCR",
+          "number": "111"
+        }
+      },
+      {
+        "count": 3,
+        "card": {
+          "name": "Hoothoot",
+          "setCode": "SCR",
+          "number": "114"
+        }
+      },
+      {
+        "count": 3,
+        "card": {
+          "name": "Noctowl",
+          "setCode": "SCR",
+          "number": "115"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Fan Rotom",
+          "setCode": "SCR",
+          "number": "118"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Fezandipiti ex",
+          "setCode": "SFA",
+          "number": "38"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Pal Pad",
+          "setCode": "SSH",
+          "number": "172"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Latias ex",
+          "setCode": "SSP",
+          "number": "220"
+        }
+      },
+      {
+        "count": 2,
+        "card": {
+          "name": "Raging Bolt ex",
+          "setCode": "TEF",
+          "number": "123"
+        }
+      },
+      {
+        "count": 1,
+        "card": {
+          "name": "Bloodmoon Ursaluna ex",
+          "setCode": "TWM",
+          "number": "141"
+        }
+      },
+      {
+        "count": 2,
+        "card": {
+          "name": "Teal Mask Ogerpon ex",
+          "setCode": "TWM",
+          "number": "25"
+        }
+      }
+    ]
+  }
+]

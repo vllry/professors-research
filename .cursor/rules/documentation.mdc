@@ -1,0 +1,13 @@
+---
+alwaysApply: true
+---
+
+Clearly document major changes.
+
+Avoid excessive documentation!!
+
+Keep existing documentation correct.
+
+Prefer to document in code. Do not create new markdown files unless asked.
+
+Keep readmes focused and easy to use.

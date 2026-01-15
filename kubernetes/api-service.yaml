@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: professors-research-api
+  namespace: professors-research
+  labels:
+    app: professors-research-api
+spec:
+  type: ClusterIP
+  selector:
+    app: professors-research-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+

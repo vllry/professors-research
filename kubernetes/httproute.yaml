@@ -1,0 +1,33 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: professors-research-route
+  namespace: professors-research
+spec:
+  parentRefs:
+    - name: professors-research-gateway
+  hostnames:
+    - "professorsresearch.net"
+  rules:
+    # Route API requests to the API service (must come first for proper matching)
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: professors-research-api
+          kind: Service
+          namespace: professors-research
+          port: 8080
+          weight: 1
+    # Route all other requests to the web frontend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: professors-research-web
+          kind: Service
+          namespace: professors-research
+          port: 80
+

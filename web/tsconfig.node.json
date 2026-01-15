@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "types": ["node", "@playwright/test"],
+    "lib": ["ES2020"]
+  },
+  "include": ["vite.config.ts", "playwright.config.ts", "tests/**/*"]
+}
+
+
+
