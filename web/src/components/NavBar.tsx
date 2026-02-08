@@ -5,7 +5,9 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isPrizesPage = location.pathname === '/prizes';
+  const isDrawSupportersPage = location.pathname === '/draw-supporters';
   const isStartPage = location.pathname === '/start';
+  const isOtherResourcesPage = location.pathname === '/other-resources';
 
   return (
     <nav className="text-white shadow-lg" style={{ backgroundColor: '#330625' }}>
@@ -20,27 +22,52 @@ export default function NavBar() {
           </Link>
 
           {/* Desktop menu */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/prizes"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                isPrizesPage
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-              }`}
-            >
-              Prizes
-            </Link>
-            <Link
-              to="/start"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                isStartPage
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-              }`}
-            >
-              Starting Hand
-            </Link>
+          <div className="hidden md:flex flex-1 items-center ml-6">
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/prizes"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isPrizesPage
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+              >
+                Prizes
+              </Link>
+              <Link
+                to="/draw-supporters"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isDrawSupportersPage
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+              >
+                Draw Supporters
+              </Link>
+              <Link
+                to="/start"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isStartPage
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+              >
+                Starting Hand
+              </Link>
+            </div>
+
+            <div className="ml-auto">
+              <Link
+                to="/other-resources"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isOtherResourcesPage
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+              >
+                Other Resources
+              </Link>
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -103,6 +130,17 @@ export default function NavBar() {
               Prizes
             </Link>
             <Link
+              to="/draw-supporters"
+              onClick={() => setIsMenuOpen(false)}
+              className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                isDrawSupportersPage
+                  ? 'bg-gray-700 text-white'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              Draw Supporters
+            </Link>
+            <Link
               to="/start"
               onClick={() => setIsMenuOpen(false)}
               className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
@@ -113,6 +151,19 @@ export default function NavBar() {
             >
               Starting Hand
             </Link>
+            <div className="pt-2 mt-2 border-t border-gray-700">
+              <Link
+                to="/other-resources"
+                onClick={() => setIsMenuOpen(false)}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  isOtherResourcesPage
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+              >
+                Other Resources
+              </Link>
+            </div>
           </div>
         </div>
       )}

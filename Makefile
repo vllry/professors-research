@@ -128,16 +128,21 @@ test-coverage:
 
 ## test-ui: Run UI acceptance tests in Docker (starts API and web servers automatically)
 test-ui:
-	@echo "Running UI acceptance tests in Docker containers..."
-	@echo "Cleaning up any existing test containers and networks..."
-	@docker compose -f docker-compose.test.yml down --remove-orphans --volumes 2>/dev/null || true
-	@docker rm -f professors-research-api-test professors-research-web-test professors-research-test-runner 2>/dev/null || true
-	@EXIT_CODE=0; \
-	PORT=$${PORT:-8080} docker compose -f docker-compose.test.yml --profile test up --build --abort-on-container-exit --exit-code-from test || EXIT_CODE=$$?; \
-	docker compose -f docker-compose.test.yml down --remove-orphans --volumes 2>/dev/null || true; \
-	docker rm -f professors-research-api-test professors-research-web-test professors-research-test-runner 2>/dev/null || true; \
-	echo "Test containers and networks cleaned up"; \
-	exit $$EXIT_CODE
+	@if docker info >/dev/null 2>&1; then \
+		echo "Running UI acceptance tests in Docker containers..."; \
+		echo "Cleaning up any existing test containers and networks..."; \
+		docker compose -f docker-compose.test.yml down --remove-orphans --volumes 2>/dev/null || true; \
+		docker rm -f professors-research-api-test professors-research-web-test professors-research-test-runner 2>/dev/null || true; \
+		EXIT_CODE=0; \
+		PORT=$${PORT:-8080} docker compose -f docker-compose.test.yml --profile test up --build --abort-on-container-exit --exit-code-from test || EXIT_CODE=$$?; \
+		docker compose -f docker-compose.test.yml down --remove-orphans --volumes 2>/dev/null || true; \
+		docker rm -f professors-research-api-test professors-research-web-test professors-research-test-runner 2>/dev/null || true; \
+		echo "Test containers and networks cleaned up"; \
+		exit $$EXIT_CODE; \
+	else \
+		echo "Docker not available; running UI acceptance tests locally (make test-ui-local)."; \
+		$(MAKE) test-ui-local; \
+	fi
 
 ## test-ui-local: Run UI acceptance tests without Docker (starts API locally; Playwright starts Vite dev server)
 test-ui-local:
@@ -157,8 +162,11 @@ test-ui-local:
 		sleep 1; \
 	done; \
 	curl -s "$$API_URL/api/health" | grep -q '"status":"ok"' || (echo "API did not become ready. See /tmp/professors-research-api.log" && exit 1); \
-	echo "Running Playwright tests (chromium only; run 'npx playwright install' for webkit locally)..."; \
-	cd web && VITE_API_URL=$$API_URL npm test -- --project=chromium
+	echo "Ensuring Playwright browsers are installed (chromium)..."; \
+	cd web; \
+	npx playwright install chromium; \
+	echo "Running Playwright tests (chromium only)..."; \
+	VITE_API_URL=$$API_URL CI= npm test -- --project=chromium
 
 ## docker-build-api: Build the API server Docker image
 docker-build-api:

@@ -54,6 +54,31 @@ type StartOddsResponse struct {
 	Errors           []APIError                    `json:"errors,omitempty"`
 }
 
+type DrawSupporterOddsRequest struct {
+	DeckSize    int `json:"deckSize"`
+	KnownBottom int `json:"knownBottom"`
+	HandSize    int `json:"handSize"`
+	PrizeCards  int `json:"prizeCards"`
+}
+
+type DrawSupporterOddsResponse struct {
+	// Odds maps supporter name -> odds for 1,2,3,4 copies of the target in the pool.
+	Odds map[string][]float64 `json:"odds"`
+	// PairOdds maps supporter name -> 4x4 table for odds of drawing at least one of BOTH cards,
+	// indexed by [countA-1][countB-1] where countA,countB are 1..4.
+	PairOdds map[string][][]float64 `json:"pairOdds"`
+	// BottomOdds maps supporter name -> odds for 1,2,3,4 copies of the target
+	// among known bottom cards when the draw goes past the top of deck.
+	BottomOdds map[string][]float64 `json:"bottomOdds,omitempty"`
+	// DrawCounts maps supporter name -> draw count for the top/shuffled pool.
+	DrawCounts map[string]int `json:"drawCounts"`
+	// EffectiveDrawCounts maps supporter name -> actual draw count used in the model
+	// after clamping to the available pool.
+	EffectiveDrawCounts map[string]int `json:"effectiveDrawCounts"`
+	// BottomDrawCounts maps supporter name -> number of cards drawn into known bottom.
+	BottomDrawCounts map[string]int `json:"bottomDrawCounts,omitempty"`
+}
+
 type ErrorResponse struct {
 	Error string `json:"error"`
 }

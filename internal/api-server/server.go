@@ -66,6 +66,7 @@ func NewServer(cfg Config) (*Server, error) {
 	mux.HandleFunc("/api/health", server.handleHealth)
 	mux.HandleFunc("/api/prize-odds", server.handlePrizeOdds)
 	mux.HandleFunc("/api/start-odds", server.handleStartOdds)
+	mux.HandleFunc("/api/draw-supporter-odds", server.handleDrawSupporterOdds)
 
 	// Apply security headers middleware
 	server.httpServer.Handler = addSecurityHeaders(mux)

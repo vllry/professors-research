@@ -305,6 +305,157 @@ func (s *Server) handleStartOdds(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) handleDrawSupporterOdds(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req DrawSupporterOddsRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		s.sendError(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	// Basic input constraints
+	if req.DeckSize < 1 || req.DeckSize > 60 {
+		s.sendError(w, "deckSize must be between 1 and 60", http.StatusBadRequest)
+		return
+	}
+	if req.KnownBottom < 0 || req.KnownBottom > req.DeckSize-1 {
+		s.sendError(w, "knownBottom must be between 0 and deckSize-1", http.StatusBadRequest)
+		return
+	}
+	if req.HandSize < 1 || req.HandSize > 60 {
+		s.sendError(w, "handSize must be between 1 and 60", http.StatusBadRequest)
+		return
+	}
+	if req.PrizeCards < 1 || req.PrizeCards > 6 {
+		s.sendError(w, "prizeCards must be between 1 and 6", http.StatusBadRequest)
+		return
+	}
+	if req.DeckSize+req.HandSize+req.PrizeCards > 59 {
+		s.sendError(w, "deckSize + handSize + prizeCards must be <= 59 (at least 1 card must be in play)", http.StatusBadRequest)
+		return
+	}
+
+	clampDrawCount := func(poolSize, drawCount int) int {
+		if poolSize < 0 {
+			poolSize = 0
+		}
+		if drawCount < 0 {
+			drawCount = 0
+		}
+		if drawCount > poolSize {
+			drawCount = poolSize
+		}
+		return drawCount
+	}
+
+	calcRow := func(poolSize, drawCount int) []float64 {
+		drawCount = clampDrawCount(poolSize, drawCount)
+
+		row := make([]float64, 4)
+		for i := 1; i <= 4; i++ {
+			target := i
+			if target > poolSize {
+				target = poolSize
+			}
+			row[i-1] = prizeodds.CalculateDrawOdds(poolSize, drawCount, target)
+		}
+		return row
+	}
+
+	calcPairTable := func(poolSize, drawCount int) [][]float64 {
+		drawCount = clampDrawCount(poolSize, drawCount)
+
+		table := make([][]float64, 4)
+		for a := 1; a <= 4; a++ {
+			row := make([]float64, 4)
+			for b := 1; b <= 4; b++ {
+				if a > poolSize || b > poolSize || a+b > poolSize {
+					row[b-1] = 0.0
+					continue
+				}
+				row[b-1] = prizeodds.CalculateDrawPairOdds(poolSize, drawCount, a, b)
+			}
+			table[a-1] = row
+		}
+		return table
+	}
+
+	poolTop := req.DeckSize - req.KnownBottom
+	ionoDraw := req.PrizeCards
+	researchDraw := 7
+
+	// Lillie's shuffles deck+hand; known bottom is not preserved.
+	lilliesPool := req.DeckSize + req.HandSize - 1
+	lilliesDraw := 6
+	if req.PrizeCards == 6 {
+		lilliesDraw = 8
+	}
+
+	effectiveDrawCounts := map[string]int{
+		"Iono":                   clampDrawCount(poolTop, ionoDraw),
+		"Professor's Research":   clampDrawCount(poolTop, researchDraw),
+		"Lillie's Determination": clampDrawCount(lilliesPool, lilliesDraw),
+	}
+
+	drawIntoBottom := func(drawCount int) int {
+		overflow := drawCount - poolTop
+		if overflow <= 0 {
+			return 0
+		}
+		if overflow > req.KnownBottom {
+			return req.KnownBottom
+		}
+		return overflow
+	}
+
+	bottomOdds := map[string][]float64{}
+	bottomDrawCounts := map[string]int{}
+	if req.KnownBottom > 0 {
+		if bottomDraw := drawIntoBottom(ionoDraw); bottomDraw > 0 {
+			bottomOdds["Iono"] = calcRow(req.KnownBottom, bottomDraw)
+			bottomDrawCounts["Iono"] = bottomDraw
+		}
+		if bottomDraw := drawIntoBottom(researchDraw); bottomDraw > 0 {
+			bottomOdds["Professor's Research"] = calcRow(req.KnownBottom, bottomDraw)
+			bottomDrawCounts["Professor's Research"] = bottomDraw
+		}
+	}
+
+	response := DrawSupporterOddsResponse{
+		Odds: map[string][]float64{
+			"Iono":                   calcRow(poolTop, effectiveDrawCounts["Iono"]),
+			"Professor's Research":   calcRow(poolTop, effectiveDrawCounts["Professor's Research"]),
+			"Lillie's Determination": calcRow(lilliesPool, effectiveDrawCounts["Lillie's Determination"]),
+		},
+		PairOdds: map[string][][]float64{
+			"Iono":                   calcPairTable(poolTop, effectiveDrawCounts["Iono"]),
+			"Professor's Research":   calcPairTable(poolTop, effectiveDrawCounts["Professor's Research"]),
+			"Lillie's Determination": calcPairTable(lilliesPool, effectiveDrawCounts["Lillie's Determination"]),
+		},
+		DrawCounts: map[string]int{
+			"Iono":                   ionoDraw,
+			"Professor's Research":   researchDraw,
+			"Lillie's Determination": lilliesDraw,
+		},
+		EffectiveDrawCounts: effectiveDrawCounts,
+	}
+	if len(bottomOdds) > 0 {
+		response.BottomOdds = bottomOdds
+		response.BottomDrawCounts = bottomDrawCounts
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Printf("Failed to encode response: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+}
+
 func (s *Server) sendError(w http.ResponseWriter, message string, statusCode int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
@@ -337,7 +488,7 @@ func (s *Server) validateAndParseDecklist(decklistStr string) (basictypes.Deckli
 // processCardSets processes CardSets from the request and calculates their odds.
 // It handles both single CardSet and multiple CardSet cases (union probability).
 func (s *Server) processCardSets(
-	w http.ResponseWriter,
+	_ http.ResponseWriter,
 	reqCardSets map[string][]CardSetJSON,
 	decklist basictypes.Decklist,
 	cardSetCalculator CardSetCalculator,
