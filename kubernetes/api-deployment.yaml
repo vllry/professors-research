@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: api-server
-          image: us-central1-docker.pkg.dev/zeitgeistlabs/us-central1-docker/professors-research-api:21e62fe-dirty
+          image: us-central1-docker.pkg.dev/zeitgeistlabs/us-central1-docker/professors-research-api:bb65596-dirty
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

@@ -77,25 +77,13 @@ func (s *Server) handlePrizeOdds(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	odds, err := prizeodds.CalculatePrizeOdds(decklist, prized)
-	if err != nil {
-		s.sendError(w, fmt.Sprintf("Failed to calculate prize odds: %v", err), http.StatusInternalServerError)
-		return
-	}
-
-	// Convert map[Card][]float64 to map[string][]float64 for JSON serialization
 	response := PrizeOddsResponse{
 		Odds:   make(map[string][]float64),
 		Errors: []APIError{},
 	}
 
-	for card, cardOdds := range odds {
-		cardKey := fmt.Sprintf("%s %s %s", card.Name, card.SetCode, card.Number)
-		response.Odds[cardKey] = cardOdds
-	}
-
-	// Check for unidentified cards and add warnings
-	// Pattern to match "Basic {X} Energy" cards (e.g., "Basic {R} Energy", "Basic Fire Energy", "Basic Water Energy")
+	// Identify basic Pokémon cards using the cache and check for unidentified cards
+	basicPokemonCards := make(map[basictypes.Card]bool)
 	basicEnergyPattern := regexp.MustCompile(`^Basic\s+(\{[A-Z]\}|\w+)\s+Energy$`)
 	unidentifiedCards := []basictypes.Card{}
 	
@@ -114,7 +102,26 @@ func (s *Server) handlePrizeOdds(w http.ResponseWriter, r *http.Request) {
 			}
 			// Card not found in cache and not a basic energy
 			unidentifiedCards = append(unidentifiedCards, card)
+			continue
 		}
+		// Check if it's a PokemonCard with Stage Basic
+		if pokemonCard, ok := detailedCard.(*basictypes.PokemonCard); ok {
+			if pokemonCard.Stage == basictypes.StageBasic {
+				basicPokemonCards[card] = true
+			}
+		}
+	}
+
+	odds, err := prizeodds.CalculatePrizeOddsWithOpeningHand(decklist, prized, basicPokemonCards)
+	if err != nil {
+		s.sendError(w, fmt.Sprintf("Failed to calculate prize odds: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	// Convert map[Card][]float64 to map[string][]float64 for JSON serialization
+	for card, cardOdds := range odds {
+		cardKey := fmt.Sprintf("%s %s %s", card.Name, card.SetCode, card.Number)
+		response.Odds[cardKey] = cardOdds
 	}
 	
 	// Add warnings for unidentified cards

@@ -1,14 +1,14 @@
 // tcgdex_standard_dump.go
 //
-// Downloads (a) all Scarlet & Violet era sets (set IDs starting with "sv"),
-// (b) all MEG era sets (set IDs starting with "meg" or "mep"), and
-// (c) all promo sets (set IDs ending with "p"), then keeps only cards
+// Downloads all sets in one or more TCGdex series (aka blocks/generations),
+// automatically including new sets as they release (e.g. `sv`, `swsh`, `me`),
+// then keeps only cards
 // whose regulation mark is >= minMark (default: "G").
 // Writes one JSON file per set into ./data/cards.
 //
 // Usage:
 //   go run tcgdex_standard_dump.go
-//   go run tcgdex_standard_dump.go -minMark=H -concurrency=16 -overwrite
+//   go run tcgdex_standard_dump.go -series=sv,me -minMark=H -concurrency=16 -overwrite
 package main
 
 import (
@@ -39,6 +39,12 @@ type SetBrief struct {
 	Name string `json:"name"`
 }
 
+type Serie struct {
+	ID   string     `json:"id"`
+	Name string     `json:"name"`
+	Sets []SetBrief `json:"sets"`
+}
+
 type cardResult struct {
 	id   string
 	card map[string]any
@@ -54,9 +60,7 @@ func main() {
 	retries := flag.Int("retries", 4, "HTTP retries for transient errors (5xx/429/network)")
 	timeout := flag.Duration("timeout", 30*time.Second, "Per-request HTTP timeout")
 	overwrite := flag.Bool("overwrite", false, "Overwrite existing set files")
-	includeSV := flag.Bool("includeSV", true, "Include sets with IDs starting with 'sv' (Scarlet & Violet era)")
-	includeMEG := flag.Bool("includeMEG", true, "Include sets with IDs starting with 'meg' or 'mep' (MEG era)")
-	includePromos := flag.Bool("includePromos", true, "Include promo sets (set IDs ending with 'p')")
+	series := flag.String("series", "sv,me", "Comma-separated TCGdex series IDs to download (e.g. sv,swsh,me)")
 	flag.Parse()
 
 	if *concurrency < 1 {
@@ -78,24 +82,17 @@ func main() {
 		fatalf("mkdir %s: %v", *outDir, err)
 	}
 
-	sets, err := fetchSetList(ctx, client, *retries)
+	seriesIDs := parseCSVLowerUnique(*series)
+	if len(seriesIDs) == 0 {
+		fatalf("no series IDs provided (use -series=sv,me etc.)")
+	}
+
+	targets, err := fetchSetsForSeries(ctx, client, seriesIDs, *retries)
 	if err != nil {
-		fatalf("fetch set list: %v", err)
+		fatalf("fetch series sets: %v", err)
 	}
 
-	// Filter and sort set IDs for stable output.
-	var targets []SetBrief
-	for _, s := range sets {
-		if shouldDownloadSet(s, *includeSV, *includeMEG, *includePromos) {
-			targets = append(targets, s)
-		}
-	}
-	sort.Slice(targets, func(i, j int) bool {
-		return strings.ToLower(targets[i].ID) < strings.ToLower(targets[j].ID)
-	})
-
-	fmt.Printf("Found %d sets; targeting %d sets (includeSV=%v includeMEG=%v includePromos=%v)\n",
-		len(sets), len(targets), *includeSV, *includeMEG, *includePromos)
+	fmt.Printf("Targeting %d sets from series=%s\n", len(targets), strings.Join(seriesIDs, ","))
 
 	var totalSets, writtenSets, skippedSets, failedSets int
 	var totalCards, keptCards, failedCards int
@@ -134,7 +131,7 @@ func main() {
 		setMeta := shallowCopyMap(setObj)
 		delete(setMeta, "cards") // avoid duplicating a huge list
 
-		cards, failed := downloadAndFilterCards(ctx, client, cardIDs, setID, min, *concurrency, *retries)
+		cards, failed := downloadAndFilterCards(ctx, client, cardIDs, min, *concurrency, *retries)
 		keptCards += len(cards)
 		failedCards += len(failed)
 
@@ -177,80 +174,86 @@ func main() {
 	fmt.Printf("Cards: seen=%d kept=%d failed=%d\n", totalCards, keptCards, failedCards)
 }
 
-func shouldDownloadSet(s SetBrief, includeSV, includeMEG, includePromos bool) bool {
-	lid := strings.ToLower(strings.TrimSpace(s.ID))
-	lname := strings.ToLower(strings.TrimSpace(s.Name))
-	if lid == "" {
-		return false
+func fetchSerie(ctx context.Context, client *http.Client, serieID string, retries int) (Serie, error) {
+	serieID = strings.ToLower(strings.TrimSpace(serieID))
+	if serieID == "" {
+		return Serie{}, errors.New("empty serie id")
 	}
-	if includeSV && strings.HasPrefix(lid, "sv") {
-		return true
+	b, err := fetchBytes(ctx, client, baseURL+"/series/"+serieID, retries)
+	if err != nil {
+		return Serie{}, err
 	}
-	if includeMEG && (strings.HasPrefix(lid, "meg") || strings.HasPrefix(lid, "mep")) {
-		return true
+	var s Serie
+	if err := json.Unmarshal(b, &s); err != nil {
+		return Serie{}, fmt.Errorf("decode serie %s: %w", serieID, err)
 	}
-	if includePromos && strings.HasSuffix(lid, "p") {
-		return true
+	if strings.TrimSpace(s.ID) == "" {
+		// Defensive: allow cases where the API echoes the id differently.
+		s.ID = serieID
 	}
-	// Mega Evolution & Phantasmal Flames sets might not follow the simple ID
-	// prefix conventions above. As a safety net, include any sets whose
-	// human-readable names clearly indicate they are part of the Mega
-	// Evolution block or the Phantasmal Flames expansion.
-	if includeMEG {
-		if strings.Contains(lname, "mega evolution") || strings.Contains(lname, "mega evolutions") {
-			return true
-		}
-		if strings.Contains(lname, "phantasmal flames") {
-			return true
-		}
-	}
-	return false
+	return s, nil
 }
 
-func fetchSetList(ctx context.Context, client *http.Client, retries int) ([]SetBrief, error) {
-	b, err := fetchBytes(ctx, client, baseURL+"/sets", retries)
-	if err != nil {
-		return nil, err
-	}
-
-	// Primary: []SetBrief
-	var direct []SetBrief
-	if err := json.Unmarshal(b, &direct); err == nil && len(direct) > 0 {
-		return direct, nil
-	}
-
-	// Fallback: look for common wrapper keys (defensive).
-	var wrapper map[string]json.RawMessage
-	if err := json.Unmarshal(b, &wrapper); err != nil {
-		return nil, fmt.Errorf("parse /sets response: %w", err)
-	}
-	for _, key := range []string{"sets", "data", "results"} {
-		if raw, ok := wrapper[key]; ok {
-			var tmp []SetBrief
-			if err := json.Unmarshal(raw, &tmp); err == nil && len(tmp) > 0 {
-				return tmp, nil
-			}
+func fetchSetsForSeries(ctx context.Context, client *http.Client, seriesIDs []string, retries int) ([]SetBrief, error) {
+	lists := make([][]SetBrief, 0, len(seriesIDs))
+	for _, serieID := range seriesIDs {
+		serie, err := fetchSerie(ctx, client, serieID, retries)
+		if err != nil {
+			return nil, err
 		}
+		lists = append(lists, serie.Sets)
 	}
+	return mergeDedupeSortSetBriefs(lists...), nil
+}
 
-	// Final fallback: generic array of objects with "id"/"name".
-	var anyArr []map[string]any
-	if err := json.Unmarshal(b, &anyArr); err == nil && len(anyArr) > 0 {
-		out := make([]SetBrief, 0, len(anyArr))
-		for _, m := range anyArr {
-			id, _ := m["id"].(string)
-			name, _ := m["name"].(string)
-			if strings.TrimSpace(id) == "" {
+func parseCSVLowerUnique(v string) []string {
+	parts := strings.Split(v, ",")
+	out := make([]string, 0, len(parts))
+	seen := make(map[string]struct{}, len(parts))
+	for _, p := range parts {
+		p = strings.ToLower(strings.TrimSpace(p))
+		if p == "" {
+			continue
+		}
+		if _, ok := seen[p]; ok {
+			continue
+		}
+		seen[p] = struct{}{}
+		out = append(out, p)
+	}
+	return out
+}
+
+func mergeDedupeSortSetBriefs(lists ...[]SetBrief) []SetBrief {
+	// Merge + dedupe by case-insensitive set id, keeping the first encountered name.
+	seen := make(map[string]SetBrief, 256)
+	order := make([]string, 0, 256)
+
+	for _, list := range lists {
+		for _, sb := range list {
+			id := strings.TrimSpace(sb.ID)
+			if id == "" {
 				continue
 			}
-			out = append(out, SetBrief{ID: id, Name: name})
-		}
-		if len(out) > 0 {
-			return out, nil
+			key := strings.ToLower(id)
+			if _, ok := seen[key]; ok {
+				continue
+			}
+			seen[key] = SetBrief{ID: id, Name: sb.Name}
+			order = append(order, key)
 		}
 	}
 
-	return nil, errors.New("could not parse set list from /sets")
+	out := make([]SetBrief, 0, len(order))
+	for _, key := range order {
+		out = append(out, seen[key])
+	}
+
+	// Stable output: sort by id, case-insensitive.
+	sort.Slice(out, func(i, j int) bool {
+		return strings.ToLower(out[i].ID) < strings.ToLower(out[j].ID)
+	})
+	return out
 }
 
 func fetchSet(ctx context.Context, client *http.Client, setID string, retries int) (map[string]any, error) {
@@ -309,7 +312,6 @@ func downloadAndFilterCards(
 	ctx context.Context,
 	client *http.Client,
 	cardIDs []string,
-	setID string,
 	minMark string,
 	concurrency int,
 	retries int,
@@ -364,7 +366,7 @@ func downloadAndFilterCards(
 			failed = append(failed, res.id)
 			continue
 		}
-		if shouldIncludeCard(res.card, setID, minMark) {
+		if shouldIncludeCard(res.card, minMark) {
 			kept = append(kept, res.card)
 		}
 	}
@@ -372,7 +374,7 @@ func downloadAndFilterCards(
 	return kept, failed
 }
 
-func shouldIncludeCard(card map[string]any, setID string, minMark string) bool {
+func shouldIncludeCard(card map[string]any, minMark string) bool {
 	// First, respect tcgdex's notion of Standard legality if present.
 	if rawLegal, ok := card["legal"]; ok {
 		if legalMap, ok := rawLegal.(map[string]any); ok {

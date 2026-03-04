@@ -50,7 +50,7 @@ export default function Prizes() {
           Calculate Prize Probabilities
         </h1>
         <p className="text-gray-600 mb-8">
-          Calculate the probability of prizing (or not-prizing) specific cards, or custom card combinations.
+          Calculate the probability of prizing (or not-prizing) specific cards, or custom card combinations. Individual card odds account for the opening hand rule (you must draw at least 1 Basic Pokémon before prizes are set aside).
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6 mb-8">

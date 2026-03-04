@@ -4,6 +4,201 @@ import (
 	basictypes "github.com/vllry/professors-research/pkg/types"
 )
 
+// CalculatePrizeOddsWithOpeningHand calculates prize/not-prize odds while conditioning on a valid
+// opening hand: the 7-card opening hand contains at least 1 Basic Pokémon, and then 6 prizes are set
+// aside from the remaining 53 cards.
+//
+// This conditioning makes Basic Pokémon slightly less likely to be prized and non-Basics slightly
+// more likely to be prized, compared to the unconditional "choose 6 prizes from 60" model.
+//
+// The returned format matches CalculatePrizeOdds: for each card with n copies, an array of length
+// min(n, 6) where index i is P(at least i+1 copies are in the target set).
+//
+// basicPokemonCards identifies which cards in the deck are Basic Pokémon (all copies of that card).
+// If there are 0 Basic Pokémon in the deck, this falls back to CalculatePrizeOdds.
+func CalculatePrizeOddsWithOpeningHand(
+	decklist basictypes.Decklist,
+	prized bool,
+	basicPokemonCards map[basictypes.Card]bool,
+) (map[basictypes.Card][]float64, error) {
+	// Total number of Basic Pokémon in deck
+	totalBasic := 0
+	for card, cnt := range decklist.Cards {
+		if basicPokemonCards[card] {
+			totalBasic += cnt
+		}
+	}
+
+	// Edge case: if no basics exist, the conditioning event has probability 0.
+	// Fall back to the unconditional model.
+	if totalBasic == 0 {
+		return CalculatePrizeOdds(decklist, prized)
+	}
+
+	// P(valid opening hand) = 1 - P(0 basics in 7)
+	denomValidHand := float64(comb(60, 7))
+	if denomValidHand == 0 {
+		return CalculatePrizeOdds(decklist, prized)
+	}
+	pZeroBasicsInHand := float64(comb(60-totalBasic, 7)) / denomValidHand
+	pValidHand := 1.0 - pZeroBasicsInHand
+	if pValidHand <= 0.0 {
+		return CalculatePrizeOdds(decklist, prized)
+	}
+
+	denomPrizes := float64(comb(60, 6))
+	denomHandGivenPrizes := float64(comb(54, 7)) // after 6 prizes are removed
+	if denomPrizes == 0 || denomHandGivenPrizes == 0 {
+		return CalculatePrizeOdds(decklist, prized)
+	}
+
+	// Helper: P(hand has 0 basics | k basics are in prizes)
+	pZeroBasicsGivenKInPrizes := func(k int) float64 {
+		// Remaining basics after prizes: totalBasic - k
+		// Remaining non-basics: 54 - (totalBasic - k) = 54 - totalBasic + k
+		remainingNonBasics := 54 - totalBasic + k
+		if remainingNonBasics < 7 {
+			return 0.0
+		}
+		return float64(comb(remainingNonBasics, 7)) / denomHandGivenPrizes
+	}
+
+	cardPrizeOdds := make(map[basictypes.Card][]float64)
+
+	for card, count := range decklist.Cards {
+		arraySize := count
+		if arraySize > 6 {
+			arraySize = 6
+		}
+		cardPrizeOdds[card] = make([]float64, arraySize)
+
+		isBasic := basicPokemonCards[card]
+
+		// Precompute exact conditional distribution for j=0..min(count,6)
+		maxJ := count
+		if maxJ > 6 {
+			maxJ = 6
+		}
+		exact := make([]float64, maxJ+1)
+
+		for j := 0; j <= maxJ; j++ {
+			// Unconditional P(Xp=j) for prizes (marginally a uniform 6-subset of 60)
+			pXpJ := float64(DefaultOddsTable.Get(count, j))
+
+			// Compute P(Xp=j AND hand has 0 basics)
+			pXpJAndZeroBasics := 0.0
+			if pXpJ > 0.0 {
+				if isBasic {
+					otherBasics := totalBasic - count
+					rest := 60 - totalBasic // all non-basics
+					// k = total basics in prizes (must be >= j if this card is basic)
+					kMin := j
+					kMax := totalBasic
+					if kMax > 6 {
+						kMax = 6
+					}
+					for k := kMin; k <= kMax; k++ {
+						otherBasicInPrizes := k - j
+						remainingSlots := 6 - j - otherBasicInPrizes
+						if otherBasicInPrizes < 0 || remainingSlots < 0 {
+							continue
+						}
+						if otherBasicInPrizes > otherBasics {
+							continue
+						}
+						if remainingSlots > rest {
+							continue
+						}
+						pXpJAndK := (float64(comb(count, j)) *
+							float64(comb(otherBasics, otherBasicInPrizes)) *
+							float64(comb(rest, remainingSlots))) / denomPrizes
+						pXpJAndZeroBasics += pXpJAndK * pZeroBasicsGivenKInPrizes(k)
+					}
+				} else {
+					otherBasics := totalBasic
+					rest := 60 - count - totalBasic // non-basic, non-target cards
+					kMin := 0
+					kMax := otherBasics
+					if kMax > 6 {
+						kMax = 6
+					}
+					for k := kMin; k <= kMax; k++ {
+						remainingSlots := 6 - j - k
+						if remainingSlots < 0 {
+							continue
+						}
+						if k > otherBasics {
+							continue
+						}
+						if remainingSlots > rest {
+							continue
+						}
+						pXpJAndK := (float64(comb(count, j)) *
+							float64(comb(otherBasics, k)) *
+							float64(comb(rest, remainingSlots))) / denomPrizes
+						pXpJAndZeroBasics += pXpJAndK * pZeroBasicsGivenKInPrizes(k)
+					}
+				}
+			}
+
+			// Conditional: P(Xp=j | valid hand) = (P(Xp=j) - P(Xp=j AND zero basics)) / P(valid hand)
+			pCond := (pXpJ - pXpJAndZeroBasics) / pValidHand
+			if pCond < 0.0 {
+				pCond = 0.0
+			}
+			if pCond > 1.0 {
+				pCond = 1.0
+			}
+			exact[j] = pCond
+		}
+
+		// Normalize small numeric drift so Σ exact[j] = 1
+		sumExact := 0.0
+		for _, v := range exact {
+			sumExact += v
+		}
+		if sumExact > 0.0 {
+			for i := range exact {
+				exact[i] /= sumExact
+			}
+		}
+
+		// Build cumulative arrays in the same shape as CalculatePrizeOdds
+		if prized {
+			for i := 0; i < arraySize; i++ {
+				cumulativeProb := 0.0
+				for j := i + 1; j <= maxJ; j++ {
+					cumulativeProb += exact[j]
+				}
+				cardPrizeOdds[card][i] = cumulativeProb
+			}
+		} else {
+			// Invert using the exact prized distribution:
+			// P(notPrized >= i+1) = P(prized <= count-(i+1)) = 1 - P(prized >= count-i)
+			for i := 0; i < arraySize; i++ {
+				threshold := count - i // count-i copies in prizes means fewer than i+1 not-prized
+				if threshold <= 0 {
+					cardPrizeOdds[card][i] = 1.0
+					continue
+				}
+				if threshold > maxJ {
+					// Can't have threshold copies in prizes if threshold > 6; thus P(prized >= threshold) = 0
+					cardPrizeOdds[card][i] = 1.0
+					continue
+				}
+
+				pAtLeastThresholdPrized := 0.0
+				for j := threshold; j <= maxJ; j++ {
+					pAtLeastThresholdPrized += exact[j]
+				}
+				cardPrizeOdds[card][i] = 1.0 - pAtLeastThresholdPrized
+			}
+		}
+	}
+
+	return cardPrizeOdds, nil
+}
+
 // CalculatePrizeOdds takes a decklist and a prized flag.
 // When prized=true (default), it calculates odds that cards are in the 6 prize cards.
 // When prized=false, it calculates odds that cards are in the 54 not-prized cards.

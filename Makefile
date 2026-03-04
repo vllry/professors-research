@@ -103,16 +103,16 @@ test:
 	@echo "Running Go tests..."
 	@if docker info >/dev/null 2>&1; then \
 		echo "Using Docker..."; \
-		docker compose -f docker-compose.dev.yml run --rm --no-deps api go test -v ./internal/... ./pkg/...; \
+		docker compose -f docker-compose.dev.yml run --rm --no-deps api go test -v ./internal/... ./pkg/... ./cmd/...; \
 	else \
 		echo "Docker not available; running tests locally (go test)."; \
-		go test -v ./internal/... ./pkg/...; \
+		go test -v ./internal/... ./pkg/... ./cmd/...; \
 	fi
 
 ## test-local: Run all Go tests locally (no Docker required)
 test-local:
 	@echo "Running Go tests locally..."
-	@go test -v ./internal/... ./pkg/...
+	@go test -v ./internal/... ./pkg/... ./cmd/...
 
 ## test-coverage: Run tests with coverage in Docker
 test-coverage:
