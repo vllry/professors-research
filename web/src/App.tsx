@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Prizes from './pages/Prizes';
 import Start from './pages/Start';
 import DrawSupporters from './pages/DrawSupporters';
+import Matchups from './pages/Matchups';
 import OtherResources from './pages/OtherResources';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/prizes" element={<Prizes />} />
             <Route path="/draw-supporters" element={<DrawSupporters />} />
             <Route path="/start" element={<Start />} />
+            <Route path="/matchups" element={<Matchups />} />
             <Route path="/other-resources" element={<OtherResources />} />
           </Routes>
         </main>

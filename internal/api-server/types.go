@@ -1,5 +1,7 @@
 package apiserver
 
+import "github.com/vllry/professors-research/internal/matchups"
+
 // JSON-friendly structures for CardSet API
 type CardJSON struct {
 	Name    string `json:"name"`
@@ -95,4 +97,37 @@ const (
 type APIError struct {
 	Type ErrorType `json:"type"`
 	Info string    `json:"info"`
+}
+
+type DeckVariantsRequest struct {
+	TournamentIDs []string `json:"tournamentIds"`
+	Archetype     string   `json:"archetype"`
+	N             int      `json:"n"`
+}
+
+type DeckVariantsResponse struct {
+	TotalDecks int                         `json:"totalDecks"`
+	CoreCards  map[string]int              `json:"coreCards"`
+	Packages   []matchups.VariantPackage   `json:"packages"`
+}
+
+type MatchupStatsRequest struct {
+	// TournamentIDs is the preferred field: a non-empty list of tournaments to include.
+	TournamentIDs []string `json:"tournamentIds,omitempty"`
+	// TournamentID is kept for backward compatibility with older clients.
+	TournamentID string           `json:"tournamentId,omitempty"`
+	Archetype    string           `json:"archetype"`
+	Variants     []map[string]int `json:"variants"`
+	// PlayerPlacement filters to matches where the target-archetype player's
+	// tournament placement is in the top X% (e.g. 10 = top 10%). 0 or omitted = no filter.
+	PlayerPlacement float64 `json:"playerPlacement,omitempty"`
+	// OpponentPlacement filters to matches where the opponent's tournament
+	// placement is in the top X%. 0 or omitted = no filter.
+	OpponentPlacement float64 `json:"opponentPlacement,omitempty"`
+}
+
+type MatchupStatsResponse struct {
+	Matchups        map[string]matchups.VariantMatchupStats `json:"matchups"`
+	ArchetypeCounts map[string]int                          `json:"archetypeCounts"`
+	VariantCounts   map[string]int                          `json:"variantCounts"`
 }

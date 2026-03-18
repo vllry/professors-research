@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { calculateDrawSupporterOdds } from '../api/client';
+import FeatureBadge from '../components/FeatureBadge';
 import type { DrawSupporterOddsResponse } from '../types/api';
 
 function formatPercent(p: number): string {
@@ -85,7 +86,10 @@ export default function DrawSupporters() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Draw Supporters</h1>
+        <h1 className="flex flex-wrap items-center gap-x-3 gap-y-2 text-3xl font-bold text-gray-900 mb-4">
+          <span>Draw Supporters</span>
+          <FeatureBadge stage="beta" />
+        </h1>
         <p className="text-gray-600 mb-8">
           Calculate abstract odds of drawing at least one copy of a card (given 1–4 copies remaining) off common draw supporters.
         </p>

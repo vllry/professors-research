@@ -2,6 +2,7 @@ import { useState } from 'react';
 import DecklistInput from '../components/DecklistInput';
 import CardSetsInput from '../components/CardSetsInput';
 import StartOddsDisplay from '../components/StartOddsDisplay';
+import FeatureBadge from '../components/FeatureBadge';
 import { calculateStartOdds } from '../api/client';
 import type { StartOddsResponse } from '../types/api';
 
@@ -44,7 +45,10 @@ export default function Start() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Calculate Starting Hand Probabilities</h1>
+        <h1 className="flex flex-wrap items-center gap-x-3 gap-y-2 text-3xl font-bold text-gray-900 mb-4">
+          <span>Calculate Starting Hand Probabilities</span>
+          <FeatureBadge stage="beta" />
+        </h1>
         <p className="text-gray-600 mb-8">
           Calculate the odds of starting with particular basics, how likely you are to have cards in your starting hand,
           and the probability of having custom card combinations in your starting hand.

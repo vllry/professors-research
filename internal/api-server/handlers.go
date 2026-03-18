@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/vllry/professors-research/internal/matchups"
 	"github.com/vllry/professors-research/internal/prize-odds"
 	basictypes "github.com/vllry/professors-research/pkg/types"
 )
@@ -21,7 +22,7 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 
 	dataLoaded := s.detailedCards.IsLoaded()
 	loadErr := s.detailedCards.LoadError()
-	
+
 	status := "ok"
 	statusCode := http.StatusOK
 	if !dataLoaded {
@@ -86,7 +87,7 @@ func (s *Server) handlePrizeOdds(w http.ResponseWriter, r *http.Request) {
 	basicPokemonCards := make(map[basictypes.Card]bool)
 	basicEnergyPattern := regexp.MustCompile(`^Basic\s+(\{[A-Z]\}|\w+)\s+Energy$`)
 	unidentifiedCards := []basictypes.Card{}
-	
+
 	for card := range decklist.Cards {
 		cardNumber, err := strconv.Atoi(card.Number)
 		if err != nil {
@@ -123,7 +124,7 @@ func (s *Server) handlePrizeOdds(w http.ResponseWriter, r *http.Request) {
 		cardKey := fmt.Sprintf("%s %s %s", card.Name, card.SetCode, card.Number)
 		response.Odds[cardKey] = cardOdds
 	}
-	
+
 	// Add warnings for unidentified cards
 	for _, card := range unidentifiedCards {
 		cardKey := fmt.Sprintf("%s %s %s", card.Name, card.SetCode, card.Number)
@@ -197,19 +198,19 @@ func (s *Server) handleStartOdds(w http.ResponseWriter, r *http.Request) {
 	// Initialize response with errors slice
 	response := StartOddsResponse{
 		Odds:             make(map[string][]float64),
-		PossibleStarters:  make(map[string]float64),
-		ForcedStarters:    make(map[string]float64),
-		Errors:            []APIError{},
+		PossibleStarters: make(map[string]float64),
+		ForcedStarters:   make(map[string]float64),
+		Errors:           []APIError{},
 	}
 
 	// Identify basic Pokemon cards using the cache and check for unidentified cards
 	basicPokemonCards := make(map[basictypes.Card]bool)
 	unidentifiedCards := []basictypes.Card{}
-	
+
 	// Pattern to match "Basic {X} Energy" cards (e.g., "Basic {R} Energy", "Basic Fire Energy", "Basic Water Energy")
 	// Matches both formats: "Basic {R} Energy" (with curly braces) and "Basic Fire Energy" (with word names)
 	basicEnergyPattern := regexp.MustCompile(`^Basic\s+(\{[A-Z]\}|\w+)\s+Energy$`)
-	
+
 	for card := range decklist.Cards {
 		cardNumber, err := strconv.Atoi(card.Number)
 		if err != nil {
@@ -234,7 +235,7 @@ func (s *Server) handleStartOdds(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	
+
 	// Add warnings for unidentified cards
 	for _, card := range unidentifiedCards {
 		cardKey := fmt.Sprintf("%s %s %s", card.Name, card.SetCode, card.Number)
@@ -463,6 +464,61 @@ func (s *Server) handleDrawSupporterOdds(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+func (s *Server) handleDeckVariants(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req DeckVariantsRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		s.sendError(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	if len(req.TournamentIDs) == 0 {
+		s.sendError(w, "tournamentIds must contain at least 1 tournament", http.StatusBadRequest)
+		return
+	}
+	if req.Archetype == "" {
+		s.sendError(w, "archetype is required", http.StatusBadRequest)
+		return
+	}
+	if req.N <= 0 {
+		s.sendError(w, "n must be a positive integer", http.StatusBadRequest)
+		return
+	}
+	if s.archetypes == nil {
+		s.sendError(w, "Archetype definitions not loaded", http.StatusServiceUnavailable)
+		return
+	}
+
+	tournamentIDs, tournamentDirs, err := s.validateAndResolveTournamentDirs(req.TournamentIDs)
+	if err != nil {
+		s.sendError(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	result, err := matchups.ComputeDeckVariants(tournamentIDs, tournamentDirs, s.archetypes, req.Archetype, req.N)
+	if err != nil {
+		s.sendError(w, fmt.Sprintf("Failed to compute deck variants: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	response := DeckVariantsResponse{
+		TotalDecks: result.TotalDecks,
+		CoreCards:  result.CoreCards,
+		Packages:   result.Packages,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Printf("Failed to encode response: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+}
+
 func (s *Server) sendError(w http.ResponseWriter, message string, statusCode int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
@@ -555,7 +611,7 @@ func convertCardSetJSONToCardSet(cardSetJSON CardSetJSON) (basictypes.CardSet, e
 	// Handle AnyOf CardSet
 	if len(cardSetJSON.AnyOfs) > 0 {
 		patterns := make([]basictypes.AnyOfPattern, 0, len(cardSetJSON.AnyOfs))
-		
+
 		for _, anyOfJSON := range cardSetJSON.AnyOfs {
 			cards := make(map[basictypes.Card]int)
 			for _, cardEntry := range anyOfJSON.Cards {
@@ -568,16 +624,16 @@ func convertCardSetJSONToCardSet(cardSetJSON CardSetJSON) (basictypes.CardSet, e
 			}
 			patterns = append(patterns, basictypes.AnyOfPattern{Cards: cards})
 		}
-		
+
 		return basictypes.NewCardSet(patterns), nil
 	}
-	
+
 	// Handle AllOf CardSet
 	if len(cardSetJSON.AllOfs) > 0 {
 		// AllOf expects a single list of cards, so we take the first AllOf entry
 		// (or combine all if there are multiple - but typically there should be one)
 		var allCards []basictypes.Card
-		
+
 		for _, allOfJSON := range cardSetJSON.AllOfs {
 			for _, cardEntry := range allOfJSON.Cards {
 				card := basictypes.Card{
@@ -591,10 +647,77 @@ func convertCardSetJSONToCardSet(cardSetJSON CardSetJSON) (basictypes.CardSet, e
 				}
 			}
 		}
-		
+
 		return basictypes.AllOf(allCards), nil
 	}
-	
+
 	return nil, fmt.Errorf("CardSet must have either 'anyOfs' or 'allOfs'")
 }
 
+func (s *Server) handleMatchupStats(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req MatchupStatsRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		s.sendError(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	tournamentIDs := req.TournamentIDs
+	if len(tournamentIDs) == 0 && req.TournamentID != "" {
+		tournamentIDs = []string{req.TournamentID}
+	}
+	if len(tournamentIDs) == 0 {
+		s.sendError(w, "tournamentIds must contain at least 1 tournament", http.StatusBadRequest)
+		return
+	}
+	if req.Archetype == "" {
+		s.sendError(w, "archetype is required", http.StatusBadRequest)
+		return
+	}
+	if s.archetypes == nil {
+		s.sendError(w, "Archetype definitions not loaded", http.StatusServiceUnavailable)
+		return
+	}
+
+	tournamentIDs, tournamentDirs, validateErr := s.validateAndResolveTournamentDirs(tournamentIDs)
+	if validateErr != nil {
+		s.sendError(w, validateErr.Error(), http.StatusBadRequest)
+		return
+	}
+
+	filter := matchups.PlacementFilter{
+		PlayerPercentile:   req.PlayerPlacement,
+		OpponentPercentile: req.OpponentPlacement,
+	}
+
+	var (
+		result *matchups.MatchupResult
+		err    error
+	)
+	if len(tournamentIDs) == 1 {
+		result, err = matchups.ComputeMatchups(tournamentDirs[0], s.archetypes, req.Archetype, req.Variants, filter)
+	} else {
+		result, err = matchups.ComputeMatchupsForTournaments(tournamentIDs, tournamentDirs, s.archetypes, req.Archetype, req.Variants, filter)
+	}
+	if err != nil {
+		s.sendError(w, fmt.Sprintf("Failed to compute matchup stats: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	response := MatchupStatsResponse{
+		Matchups:        result.Matchups,
+		ArchetypeCounts: result.ArchetypeCounts,
+		VariantCounts:   result.VariantCounts,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Printf("Failed to encode response: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+}

@@ -7,16 +7,21 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
 	"github.com/vllry/professors-research/internal/detailedcardcache"
+	"github.com/vllry/professors-research/internal/matchups"
 )
 
 // Server represents the HTTP server
 type Server struct {
 	httpServer    *http.Server
 	detailedCards *detailedcardcache.DetailedCardCache
+	archetypes    []matchups.Archetype
+	tournaments   map[string]tournamentInfo
+	dataDir       string
 }
 
 // Config holds server configuration
@@ -40,6 +45,13 @@ func NewServer(cfg Config) (*Server, error) {
 	// Start loading DetailedCard cache asynchronously
 	cache := detailedcardcache.NewDetailedCardCache(dataDir)
 
+	archetypes, err := matchups.LoadArchetypes(filepath.Join(dataDir, "archetypes.json"))
+	if err != nil {
+		log.Printf("Warning: failed to load archetypes: %v", err)
+	}
+
+	tournaments := loadTournamentRegistry(dataDir)
+
 	mux := http.NewServeMux()
 
 	server := &Server{
@@ -50,6 +62,9 @@ func NewServer(cfg Config) (*Server, error) {
 			IdleTimeout:  60 * time.Second,
 		},
 		detailedCards: cache,
+		archetypes:    archetypes,
+		tournaments:   tournaments,
+		dataDir:       dataDir,
 	}
 
 	// Health check endpoints - support multiple paths for compatibility
@@ -67,6 +82,10 @@ func NewServer(cfg Config) (*Server, error) {
 	mux.HandleFunc("/api/prize-odds", server.handlePrizeOdds)
 	mux.HandleFunc("/api/start-odds", server.handleStartOdds)
 	mux.HandleFunc("/api/draw-supporter-odds", server.handleDrawSupporterOdds)
+	mux.HandleFunc("/api/matchup-stats", server.handleMatchupStats)
+	mux.HandleFunc("/api/deck-variants", server.handleDeckVariants)
+	mux.HandleFunc("/api/tournaments", server.handleTournaments)
+	mux.HandleFunc("/api/archetypes", server.handleArchetypes)
 
 	// Apply security headers middleware
 	server.httpServer.Handler = addSecurityHeaders(mux)

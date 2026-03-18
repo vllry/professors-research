@@ -7,6 +7,7 @@ export default function NavBar() {
   const isPrizesPage = location.pathname === '/prizes';
   const isDrawSupportersPage = location.pathname === '/draw-supporters';
   const isStartPage = location.pathname === '/start';
+  const isMatchupsPage = location.pathname === '/matchups';
   const isOtherResourcesPage = location.pathname === '/other-resources';
 
   return (
@@ -53,6 +54,16 @@ export default function NavBar() {
                 }`}
               >
                 Starting Hand
+              </Link>
+              <Link
+                to="/matchups"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isMatchupsPage
+                    ? 'bg-gray-700 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+              >
+                Matchups
               </Link>
             </div>
 
@@ -150,6 +161,17 @@ export default function NavBar() {
               }`}
             >
               Starting Hand
+            </Link>
+            <Link
+              to="/matchups"
+              onClick={() => setIsMenuOpen(false)}
+              className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                isMatchupsPage
+                  ? 'bg-gray-700 text-white'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              Matchups
             </Link>
             <div className="pt-2 mt-2 border-t border-gray-700">
               <Link

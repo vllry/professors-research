@@ -6,10 +6,15 @@ import (
 	"math"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"reflect"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/vllry/professors-research/internal/detailedcardcache"
+	"github.com/vllry/professors-research/pkg/types"
 )
 
 func TestHandleStartOdds_UnidentifiedCardWarning(t *testing.T) {
@@ -170,7 +175,7 @@ func TestBasicEnergyPattern(t *testing.T) {
 		{"Basic {R} Energy EVO 92", false}, // Has extra text
 		{"Basic Energy", false},            // Missing type
 		{"Basic {R}", false},               // Missing "Energy"
-		{"Fire Energy", false},              // Missing "Basic"
+		{"Fire Energy", false},             // Missing "Basic"
 		{"Basic {RR} Energy", false},       // Multiple letters in braces
 		{"Basic {R} Energy Extra", false},  // Extra text
 	}
@@ -496,3 +501,320 @@ func TestHandleDrawSupporterOdds_LilliesNotAffectedByKnownBottom(t *testing.T) {
 	}
 }
 
+func TestHandleTournaments_Success(t *testing.T) {
+	root := t.TempDir()
+	tournamentID := "CU01wDygvn34WEPNJ3ou"
+	tournamentDir := filepath.Join(root, "tournaments", tournamentID)
+	if err := os.MkdirAll(tournamentDir, 0o755); err != nil {
+		t.Fatalf("mkdir tournament dir: %v", err)
+	}
+
+	tf := map[string]any{
+		"tournamentId":   tournamentID,
+		"tournamentName": "2026 Curitiba Pokémon TCG Regional Championships",
+	}
+	tfBytes, _ := json.Marshal(tf)
+	if err := os.WriteFile(filepath.Join(tournamentDir, "tournament.json"), tfBytes, 0o644); err != nil {
+		t.Fatalf("write tournament.json: %v", err)
+	}
+
+	server, err := NewServer(Config{
+		Port:    "8080",
+		DataDir: root,
+	})
+	if err != nil {
+		t.Fatalf("Failed to create server: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/api/tournaments", nil)
+	w := httptest.NewRecorder()
+
+	server.handleTournaments(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var tournaments []TournamentResponse
+	if err := json.Unmarshal(w.Body.Bytes(), &tournaments); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+
+	if len(tournaments) == 0 {
+		t.Fatal("Expected at least one tournament")
+	}
+
+	var found *TournamentResponse
+	for i := range tournaments {
+		if tournaments[i].ID == tournamentID {
+			found = &tournaments[i]
+			break
+		}
+	}
+	if found == nil {
+		t.Fatalf("Expected tournament %s not found in response", tournamentID)
+	}
+	if found.Year != 2026 {
+		t.Errorf("Expected year 2026, got %d", found.Year)
+	}
+	if found.Location != "Curitiba" {
+		t.Errorf("Expected location Curitiba, got %s", found.Location)
+	}
+}
+
+func TestHandleTournaments_MethodNotAllowed(t *testing.T) {
+	server, err := NewServer(Config{
+		Port:    "8080",
+		DataDir: "nonexistent",
+	})
+	if err != nil {
+		t.Fatalf("Failed to create server: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodPost, "/api/tournaments", nil)
+	w := httptest.NewRecorder()
+
+	server.handleTournaments(w, req)
+
+	if w.Code != http.StatusMethodNotAllowed {
+		t.Fatalf("Expected status 405, got %d", w.Code)
+	}
+}
+
+func TestHandleArchetypes_Success(t *testing.T) {
+	root := t.TempDir()
+
+	archetypes := []map[string]any{
+		{"name": "Zeta", "requires": map[string]int{"Z": 1}},
+		{"name": "Alpha", "requires": map[string]int{"A": 2}},
+	}
+	archBytes, _ := json.Marshal(archetypes)
+	if err := os.WriteFile(filepath.Join(root, "archetypes.json"), archBytes, 0o644); err != nil {
+		t.Fatalf("write archetypes.json: %v", err)
+	}
+
+	server, err := NewServer(Config{
+		Port:    "8080",
+		DataDir: root,
+	})
+	if err != nil {
+		t.Fatalf("Failed to create server: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/api/archetypes", nil)
+	w := httptest.NewRecorder()
+
+	server.handleArchetypes(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var names []string
+	if err := json.Unmarshal(w.Body.Bytes(), &names); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+
+	want := []string{"Alpha", "Zeta"}
+	if !reflect.DeepEqual(names, want) {
+		t.Fatalf("Expected %v, got %v", want, names)
+	}
+}
+
+func TestHandleArchetypes_MethodNotAllowed(t *testing.T) {
+	server, err := NewServer(Config{
+		Port:    "8080",
+		DataDir: "nonexistent",
+	})
+	if err != nil {
+		t.Fatalf("Failed to create server: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodPost, "/api/archetypes", nil)
+	w := httptest.NewRecorder()
+
+	server.handleArchetypes(w, req)
+
+	if w.Code != http.StatusMethodNotAllowed {
+		t.Fatalf("Expected status 405, got %d", w.Code)
+	}
+}
+
+func TestHandleMatchupStats_AcceptsTournamentIdsAndReturnsCardCountsPerVariant(t *testing.T) {
+	root := t.TempDir()
+
+	// Archetype definitions required by the handler.
+	archetypes := []map[string]any{
+		{"name": "Charizard Arcanine", "requires": map[string]int{"Charizard ex": 1, "Arcanine ex": 1}},
+		{"name": "Dragapult", "requires": map[string]int{"Dragapult ex": 1}},
+	}
+	archBytes, _ := json.Marshal(archetypes)
+	if err := os.WriteFile(filepath.Join(root, "archetypes.json"), archBytes, 0o644); err != nil {
+		t.Fatalf("write archetypes.json: %v", err)
+	}
+
+	writeTournament := func(id string) {
+		t.Helper()
+		dir := filepath.Join(root, "tournaments", id)
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			t.Fatalf("mkdir tournament dir: %v", err)
+		}
+
+		decklists := []map[string]any{
+			{
+				"player": "alice",
+				"cards": []map[string]any{
+					{"count": 2, "card": map[string]any{"name": "Charizard ex", "setCode": "T", "number": "1"}},
+					{"count": 1, "card": map[string]any{"name": "Arcanine ex", "setCode": "T", "number": "2"}},
+					{"count": 57, "card": map[string]any{"name": "Filler", "setCode": "T", "number": "3"}},
+				},
+			},
+			{
+				"player": "bob",
+				"cards": []map[string]any{
+					{"count": 2, "card": map[string]any{"name": "Dragapult ex", "setCode": "T", "number": "4"}},
+					{"count": 58, "card": map[string]any{"name": "Filler", "setCode": "T", "number": "3"}},
+				},
+			},
+		}
+		dlBytes, _ := json.Marshal(decklists)
+		if err := os.WriteFile(filepath.Join(dir, "decklists.json"), dlBytes, 0o644); err != nil {
+			t.Fatalf("write decklists.json: %v", err)
+		}
+
+		matches := []types.MatchResult{
+			{Round: 1, Table: 1, Player1: "alice", Player2: "bob", Outcome: types.MatchOutcomeWin, Winner: "alice"},
+		}
+		mBytes, _ := json.Marshal(matches)
+		if err := os.WriteFile(filepath.Join(dir, "matches.json"), mBytes, 0o644); err != nil {
+			t.Fatalf("write matches.json: %v", err)
+		}
+	}
+
+	writeTournament("t1")
+	writeTournament("t2")
+
+	server, err := NewServer(Config{Port: "0", DataDir: root})
+	if err != nil {
+		t.Fatalf("NewServer: %v", err)
+	}
+	// Avoid any background cache loading affecting tests.
+	server.detailedCards = detailedcardcache.NewEmptyLoadedCache()
+
+	reqBody := MatchupStatsRequest{
+		TournamentIDs: []string{"t1", "t2"},
+		Archetype:     "Charizard Arcanine",
+		Variants:      []map[string]int{{"Arcanine ex": 1}},
+	}
+	body, _ := json.Marshal(reqBody)
+	req := httptest.NewRequest(http.MethodPost, "/api/matchup-stats", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	server.handleMatchupStats(w, req)
+	if w.Code != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp MatchupStatsResponse
+	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+
+	// Aggregated across both tournaments.
+	if resp.ArchetypeCounts["Charizard Arcanine"] != 2 {
+		t.Fatalf("archetypeCounts[Charizard Arcanine] = %d, want 2", resp.ArchetypeCounts["Charizard Arcanine"])
+	}
+	if resp.VariantCounts["0"] != 2 {
+		t.Fatalf("variantCounts[0] = %d, want 2", resp.VariantCounts["0"])
+	}
+
+	// Variant includes explicit card count map.
+	if resp.Matchups["0"].CardCounts["Arcanine ex"] != 1 {
+		t.Fatalf("matchups[0].cardCounts[Arcanine ex] = %d, want 1", resp.Matchups["0"].CardCounts["Arcanine ex"])
+	}
+
+	rec := resp.Matchups["0"].Matchups["Dragapult"]
+	if rec.Wins != 2 || rec.Losses != 0 || rec.Ties != 0 {
+		t.Fatalf("variant 0 vs Dragapult got %d/%d/%d, want 2/0/0", rec.Wins, rec.Losses, rec.Ties)
+	}
+}
+
+func TestHandleMatchupStats_RejectsUnknownTournamentID(t *testing.T) {
+	root := t.TempDir()
+
+	archetypes := []map[string]any{
+		{"name": "Charizard Arcanine", "requires": map[string]int{"Charizard ex": 1}},
+	}
+	archBytes, _ := json.Marshal(archetypes)
+	if err := os.WriteFile(filepath.Join(root, "archetypes.json"), archBytes, 0o644); err != nil {
+		t.Fatalf("write archetypes.json: %v", err)
+	}
+
+	if err := os.MkdirAll(filepath.Join(root, "tournaments", "t1"), 0o755); err != nil {
+		t.Fatalf("mkdir tournament dir: %v", err)
+	}
+
+	server, err := NewServer(Config{Port: "0", DataDir: root})
+	if err != nil {
+		t.Fatalf("NewServer: %v", err)
+	}
+	server.detailedCards = detailedcardcache.NewEmptyLoadedCache()
+
+	reqBody := MatchupStatsRequest{
+		TournamentIDs: []string{"t1", "not-a-real-tournament"},
+		Archetype:     "Charizard Arcanine",
+	}
+	body, _ := json.Marshal(reqBody)
+	req := httptest.NewRequest(http.MethodPost, "/api/matchup-stats", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	server.handleMatchupStats(w, req)
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("Expected status 400, got %d: %s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(w.Body.String(), "unknown tournamentId") {
+		t.Fatalf("Expected unknown tournamentId error, got: %s", w.Body.String())
+	}
+}
+
+func TestHandleDeckVariants_RejectsUnknownTournamentID(t *testing.T) {
+	root := t.TempDir()
+
+	archetypes := []map[string]any{
+		{"name": "Charizard Arcanine", "requires": map[string]int{"Charizard ex": 1}},
+	}
+	archBytes, _ := json.Marshal(archetypes)
+	if err := os.WriteFile(filepath.Join(root, "archetypes.json"), archBytes, 0o644); err != nil {
+		t.Fatalf("write archetypes.json: %v", err)
+	}
+
+	if err := os.MkdirAll(filepath.Join(root, "tournaments", "t1"), 0o755); err != nil {
+		t.Fatalf("mkdir tournament dir: %v", err)
+	}
+
+	server, err := NewServer(Config{Port: "0", DataDir: root})
+	if err != nil {
+		t.Fatalf("NewServer: %v", err)
+	}
+	server.detailedCards = detailedcardcache.NewEmptyLoadedCache()
+
+	reqBody := DeckVariantsRequest{
+		TournamentIDs: []string{"not-a-real-tournament"},
+		Archetype:     "Charizard Arcanine",
+		N:             3,
+	}
+	body, _ := json.Marshal(reqBody)
+	req := httptest.NewRequest(http.MethodPost, "/api/deck-variants", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	server.handleDeckVariants(w, req)
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("Expected status 400, got %d: %s", w.Code, w.Body.String())
+	}
+	if !strings.Contains(w.Body.String(), "unknown tournamentId") {
+		t.Fatalf("Expected unknown tournamentId error, got: %s", w.Body.String())
+	}
+}

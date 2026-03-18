@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Dragapult Dusknoir",
+    "requires": {"Dragapult ex": 2, "Dusknoir": 1}
+  },
+  {
+    "name": "Dragapult Charizard",
+    "requires": {"Dragapult ex": 1, "Charizard ex": 1}
+  },
+  {
+    "name": "Mega Absol",
+    "requires": {"Mega Absol ex": 2}
+  },
+  {
+    "name": "Gholdengo Solrock",
+    "requires": {"Gholdengo ex": 3, "Solrock": 1}
+  },
+  {
+    "name": "Gholdengo Genesect",
+    "requires": {"Gholdengo ex": 3, "Genesect ex": 1}
+  },
+  {
+    "name": "Charizard Noctowl",
+    "requires": {"Charizard ex": 2, "Noctowl": 1}
+  },
+  {
+    "name": "Charizard Pidgeot",
+    "requires": {"Charizard ex": 2, "Pidgeot ex": 1}
+  },
+  {
+    "name": "Gardevoir Jellicent",
+    "requires": {"Gardevoir ex": 2, "Jellicent ex": 1}
+  },
+  {
+    "name": "Gardevoir",
+    "requires": {"Gardevoir ex": 2}
+  },
+  {
+    "name": "N's Zoroark",
+    "requires": {"N's Zoroark ex": 2}
+  },
+  {
+    "name": "Crustle",
+    "requires": {"Crustle": 3}
+  },
+  {
+    "name": "Alakazam",
+    "requires": {"Alakazam": 2}
+  },
+  {
+    "name": "Mega Lucario",
+    "requires": {"Mega Lucario ex": 2}
+  },
+  {
+    "name": "Grimmsnarl",
+    "requires": {"Marnie's Grimmsnarl ex": 2}
+  },
+  {
+    "name": "Munkidori Froslass",
+    "requires": {"Munkidori": 2, "Froslass": 1}
+  },
+  {
+    "name": "Festival Lead",
+    "requires": {"Festival Grounds": 2}
+  },
+  {
+    "name": "Raging Bolt",
+    "requires": {"Raging Bolt ex": 2}
+  },
+  {
+    "name": "Tera Box",
+    "requires": {"Teal Mask Ogerpon ex": 2, "Wellspring Mask Ogerpon ex": 1}
+  },
+  {
+    "name": "Ceruledge",
+    "requires": {"Ceruledge ex": 2}
+  },
+  {
+    "name": "Jolting Hands",
+    "requires": {"Iron Hands ex": 2, "Joltik": 1}
+  },
+  {
+    "name": "Toedscruel",
+    "requires": {"Toedscruel": 1, "Toedscruel ex": 1}
+  },
+  {
+    "name": "Eevee Box",
+    "requires": {"Flareon ex": 2}
+  },
+  {
+    "name": "Mega Venusaur",
+    "requires": {"Mega Venusaur ex": 2}
+  },
+  {
+    "name": "Slowking",
+    "requires": {"Slowking": 2}
+  },
+  {
+    "name": "Mega Froslass",
+    "requires": {"Mega Froslass ex": 1}
+  },
+  {
+    "name": "Mega Lopunny",
+    "requires": {"Mega Lopunny ex": 2}
+  },
+  {
+    "name": "Kangaskhan Bouffalant",
+    "requires": {"Mega Kangaskhan ex": 2, "Bouffalant": 2}
+  }
+]

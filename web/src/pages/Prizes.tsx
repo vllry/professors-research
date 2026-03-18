@@ -2,6 +2,7 @@ import { useState } from 'react';
 import DecklistInput from '../components/DecklistInput';
 import CardSetsInput from '../components/CardSetsInput';
 import OddsDisplay from '../components/OddsDisplay';
+import FeatureBadge from '../components/FeatureBadge';
 import { calculatePrizeOdds } from '../api/client';
 import type { PrizeOddsResponse } from '../types/api';
 
@@ -46,8 +47,9 @@ export default function Prizes() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Calculate Prize Probabilities
+        <h1 className="flex flex-wrap items-center gap-x-3 gap-y-2 text-3xl font-bold text-gray-900 mb-4">
+          <span>Calculate Prize Probabilities</span>
+          <FeatureBadge stage="beta" />
         </h1>
         <p className="text-gray-600 mb-8">
           Calculate the probability of prizing (or not-prizing) specific cards, or custom card combinations. Individual card odds account for the opening hand rule (you must draw at least 1 Basic Pokémon before prizes are set aside).

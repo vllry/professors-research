@@ -85,5 +85,35 @@ export interface ErrorResponse {
   error: string;
 }
 
+export interface TournamentResponse {
+  id: string;
+  year: number;
+  location: string;
+}
 
+export interface MatchupRecord {
+  wins: number;
+  losses: number;
+  ties: number;
+  winRate: number;
+}
+
+export interface VariantMatchupStats {
+  cardCounts: Record<string, number>;
+  matchups: Record<string, MatchupRecord>;
+}
+
+export interface MatchupStatsRequest {
+  tournamentIds: string[];
+  archetype: string;
+  variants?: Array<Record<string, number>>;
+  playerPlacement?: number;
+  opponentPlacement?: number;
+}
+
+export interface MatchupStatsResponse {
+  matchups: Record<string, VariantMatchupStats>;
+  archetypeCounts: Record<string, number>;
+  variantCounts: Record<string, number>;
+}
 
