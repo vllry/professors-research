@@ -1,0 +1,346 @@
+{
+  "cards": [
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-001",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "001",
+      "name": "Grass Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-002",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "002",
+      "name": "Fire Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-003",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "003",
+      "name": "Water Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-004",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "004",
+      "name": "Lightning Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-005",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "005",
+      "name": "Psychic Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-006",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "006",
+      "name": "Fighting Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-007",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "007",
+      "name": "Darkness Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mee-008",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "008",
+      "name": "Metal Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 8,
+          "total": 8
+        },
+        "id": "mee",
+        "name": "Mega Evolution Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    }
+  ],
+  "downloadedAt": "2026-05-26T00:52:57Z",
+  "failedCardIDs": null,
+  "failedCardIDs_count": 0,
+  "minRegulationMark": "G",
+  "physicalSetCode": "MEE",
+  "set": {
+    "abbreviation": {
+      "official": "MEE"
+    },
+    "cardCount": {
+      "firstEd": 0,
+      "holo": 0,
+      "normal": 0,
+      "official": 8,
+      "reverse": 0,
+      "total": 8
+    },
+    "id": "mee",
+    "legal": {
+      "expanded": true,
+      "standard": false
+    },
+    "name": "Mega Evolution Energy",
+    "releaseDate": "2025-09-25",
+    "serie": {
+      "id": "me",
+      "name": "Mega Evolution"
+    }
+  },
+  "source": "https://api.tcgdex.net/v2/en"
+}

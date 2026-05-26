@@ -1,0 +1,970 @@
+{
+  "cards": [
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-001",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "001",
+      "name": "Grass Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-002",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "002",
+      "name": "Fire Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-003",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "003",
+      "name": "Water Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-004",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "004",
+      "name": "Lightning Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-005",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "005",
+      "name": "Psychic Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-006",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "006",
+      "name": "Fighting Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-007",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "007",
+      "name": "Darkness Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-008",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "008",
+      "name": "Metal Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-009",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "009",
+      "name": "Grass Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-010",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "010",
+      "name": "Fire Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-011",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "011",
+      "name": "Water Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-012",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "012",
+      "name": "Lightning Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-013",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "013",
+      "name": "Psychic Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-014",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "014",
+      "name": "Fighting Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-015",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "015",
+      "name": "Darkness Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-016",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "016",
+      "name": "Metal Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-017",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "017",
+      "name": "Grass Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-018",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "018",
+      "name": "Fire Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-019",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "019",
+      "name": "Water Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-020",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "020",
+      "name": "Lightning Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-021",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "021",
+      "name": "Psychic Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-022",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "022",
+      "name": "Fighting Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-023",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "023",
+      "name": "Darkness Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "sve-024",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "024",
+      "name": "Metal Energy",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": null
+      },
+      "rarity": "Common",
+      "set": {
+        "cardCount": {
+          "official": 24,
+          "total": 24
+        },
+        "id": "sve",
+        "name": "Scarlet & Violet Energy"
+      },
+      "updated": "2026-03-06T18:15:02Z",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "size": "standard",
+          "type": "normal",
+          "variantId": "generated"
+        }
+      ]
+    }
+  ],
+  "downloadedAt": "2026-05-26T00:52:57Z",
+  "failedCardIDs": null,
+  "failedCardIDs_count": 0,
+  "minRegulationMark": "G",
+  "physicalSetCode": "SVE",
+  "set": {
+    "abbreviation": {
+      "official": "SVE"
+    },
+    "cardCount": {
+      "firstEd": 0,
+      "holo": 0,
+      "normal": 0,
+      "official": 24,
+      "reverse": 0,
+      "total": 24
+    },
+    "id": "sve",
+    "legal": {
+      "expanded": true,
+      "standard": false
+    },
+    "name": "Scarlet & Violet Energy",
+    "releaseDate": "2023-03-31",
+    "serie": {
+      "id": "sv",
+      "name": "Scarlet & Violet"
+    }
+  },
+  "source": "https://api.tcgdex.net/v2/en"
+}

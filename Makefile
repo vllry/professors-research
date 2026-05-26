@@ -1,4 +1,4 @@
-.PHONY: build run run-api test test-local test-coverage test-ui test-ui-local clean help docker-build-api docker-build-web docker-build docker-push-api docker-push-web docker-push docker-auth security-audit security-audit-fix docker-down docker-down-test
+.PHONY: build run run-api test test-local test-coverage test-ui test-ui-local download-cards clean help docker-build-api docker-build-web docker-build docker-push-api docker-push-web docker-push docker-auth security-audit security-audit-fix docker-down docker-down-test
 
 # Build variables
 BINARY_NAME=api-server
@@ -143,6 +143,12 @@ test-ui:
 		echo "Docker not available; running UI acceptance tests locally (make test-ui-local)."; \
 		$(MAKE) test-ui-local; \
 	fi
+
+## download-cards: Fetch new Standard-legal sets from TCGdex into data/cards (skips existing files)
+download-cards:
+	@echo "Downloading card sets from TCGdex (series sv, me)..."
+	@go run ./cmd/download-cards -series=sv,me -out ./data/cards
+	@echo "Card download complete"
 
 ## test-ui-local: Run UI acceptance tests without Docker (starts API locally; Playwright starts Vite dev server)
 test-ui-local:

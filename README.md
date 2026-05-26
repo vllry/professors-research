@@ -77,6 +77,20 @@ A card with 4 copies returns `[0.351, 0.046, 0.002, 0.00003]` meaning:
 }
 ```
 
+## Download Cards (TCGdex)
+
+Refresh Standard-legal card data (regulation mark G and later) from [TCGdex](https://tcgdex.net). Existing set files are skipped; only new sets are downloaded.
+
+```bash
+make download-cards
+```
+
+To re-download everything, pass `-overwrite` to the tool directly:
+
+```bash
+go run ./cmd/download-cards -series=sv,me -overwrite
+```
+
 ## Download Tournament (RK9)
 
 Download available **decklists** and **match results** for an RK9 tournament ID:

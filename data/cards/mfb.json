@@ -1,0 +1,466 @@
+{
+  "cards": [
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mfb-8",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "8",
+      "name": "Grass Energy",
+      "pricing": {
+        "cardmarket": {
+          "avg": 0.11,
+          "avg-holo": null,
+          "avg1": 0.2,
+          "avg1-holo": null,
+          "avg30": 0.12,
+          "avg30-holo": null,
+          "avg7": 0.13,
+          "avg7-holo": null,
+          "idProduct": 741986,
+          "low": 0.02,
+          "low-holo": null,
+          "trend": 0.16,
+          "trend-holo": 0,
+          "unit": "EUR",
+          "updated": "2026-05-25T00:44:06.000Z"
+        },
+        "tcgplayer": null
+      },
+      "rarity": "None",
+      "set": {
+        "cardCount": {
+          "official": 48,
+          "total": 48
+        },
+        "id": "mfb",
+        "name": "My First Battle"
+      },
+      "updated": "2026-04-14T22:39:39+01:00",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.11,
+              "avg-holo": null,
+              "avg1": 0.2,
+              "avg1-holo": null,
+              "avg30": 0.12,
+              "avg30-holo": null,
+              "avg7": 0.13,
+              "avg7-holo": null,
+              "idProduct": 741986,
+              "low": 0.02,
+              "low-holo": null,
+              "trend": 0.16,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "bulbasaur"
+          ],
+          "type": "normal",
+          "variantId": "3a83wf50tx7zeu6ndbdxusvi7"
+        },
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.58,
+              "avg-holo": null,
+              "avg1": 0.4,
+              "avg1-holo": null,
+              "avg30": 0.38,
+              "avg30-holo": null,
+              "avg7": 0.49,
+              "avg7-holo": null,
+              "idProduct": 741985,
+              "low": 0.03,
+              "low-holo": null,
+              "trend": 0.42,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "bulbasaur",
+            "pokeball"
+          ],
+          "subtype": "blue-border",
+          "type": "normal",
+          "variantId": "5xw5b038bcdfkvk8o3i7rg83sk8guuh4huy6zupavjes"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mfb-16",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "16",
+      "name": "Fire Energy",
+      "pricing": {
+        "cardmarket": {
+          "avg": 0.13,
+          "avg-holo": null,
+          "avg1": 0.15,
+          "avg1-holo": null,
+          "avg30": 0.12,
+          "avg30-holo": null,
+          "avg7": 0.14,
+          "avg7-holo": null,
+          "idProduct": 741998,
+          "low": 0.02,
+          "low-holo": null,
+          "trend": 0.17,
+          "trend-holo": 0,
+          "unit": "EUR",
+          "updated": "2026-05-25T00:44:06.000Z"
+        },
+        "tcgplayer": null
+      },
+      "rarity": "None",
+      "set": {
+        "cardCount": {
+          "official": 48,
+          "total": 48
+        },
+        "id": "mfb",
+        "name": "My First Battle"
+      },
+      "updated": "2026-04-14T22:39:39+01:00",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.13,
+              "avg-holo": null,
+              "avg1": 0.15,
+              "avg1-holo": null,
+              "avg30": 0.12,
+              "avg30-holo": null,
+              "avg7": 0.14,
+              "avg7-holo": null,
+              "idProduct": 741998,
+              "low": 0.02,
+              "low-holo": null,
+              "trend": 0.17,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "charmander"
+          ],
+          "type": "normal",
+          "variantId": "2tszcx1bprnqze5gvzp7lp2zg7"
+        },
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.34,
+              "avg-holo": null,
+              "avg1": 0.45,
+              "avg1-holo": null,
+              "avg30": 0.42,
+              "avg30-holo": null,
+              "avg7": 0.34,
+              "avg7-holo": null,
+              "idProduct": 741997,
+              "low": 0.15,
+              "low-holo": null,
+              "trend": 0.4,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "charmander",
+            "pokeball"
+          ],
+          "subtype": "blue-border",
+          "type": "normal",
+          "variantId": "546okh2s5rqyimvihxv6zm07noea55npmjkxaox4thi0s"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mfb-24",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "24",
+      "name": "Lightning Energy",
+      "pricing": {
+        "cardmarket": {
+          "avg": 0.14,
+          "avg-holo": null,
+          "avg1": 0.2,
+          "avg1-holo": null,
+          "avg30": 0.11,
+          "avg30-holo": null,
+          "avg7": 0.16,
+          "avg7-holo": null,
+          "idProduct": 742010,
+          "low": 0.02,
+          "low-holo": null,
+          "trend": 0.16,
+          "trend-holo": 0,
+          "unit": "EUR",
+          "updated": "2026-05-25T00:44:06.000Z"
+        },
+        "tcgplayer": null
+      },
+      "rarity": "None",
+      "set": {
+        "cardCount": {
+          "official": 48,
+          "total": 48
+        },
+        "id": "mfb",
+        "name": "My First Battle"
+      },
+      "updated": "2026-04-14T22:39:39+01:00",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.14,
+              "avg-holo": null,
+              "avg1": 0.2,
+              "avg1-holo": null,
+              "avg30": 0.11,
+              "avg30-holo": null,
+              "avg7": 0.16,
+              "avg7-holo": null,
+              "idProduct": 742010,
+              "low": 0.02,
+              "low-holo": null,
+              "trend": 0.16,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "pikachu"
+          ],
+          "type": "normal",
+          "variantId": "4ffrmhcfi9nxk87y2jfj869"
+        },
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.46,
+              "avg-holo": null,
+              "avg1": 0.45,
+              "avg1-holo": null,
+              "avg30": 0.47,
+              "avg30-holo": null,
+              "avg7": 0.54,
+              "avg7-holo": null,
+              "idProduct": 742009,
+              "low": 0.03,
+              "low-holo": null,
+              "trend": 0.53,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "pikachu",
+            "pokeball"
+          ],
+          "subtype": "blue-border",
+          "type": "normal",
+          "variantId": "80gdqxre90zs6txo43aqsz9ak9q7nz6erorunvrmw6"
+        }
+      ]
+    },
+    {
+      "category": "Energy",
+      "energyType": "Normal",
+      "id": "mfb-32",
+      "legal": {
+        "expanded": true,
+        "standard": true
+      },
+      "localId": "32",
+      "name": "Water Energy",
+      "pricing": {
+        "cardmarket": {
+          "avg": 0.12,
+          "avg-holo": null,
+          "avg1": 0.1,
+          "avg1-holo": null,
+          "avg30": 0.11,
+          "avg30-holo": null,
+          "avg7": 0.13,
+          "avg7-holo": null,
+          "idProduct": 742022,
+          "low": 0.02,
+          "low-holo": null,
+          "trend": 0.13,
+          "trend-holo": 0,
+          "unit": "EUR",
+          "updated": "2026-05-25T00:44:06.000Z"
+        },
+        "tcgplayer": null
+      },
+      "rarity": "None",
+      "set": {
+        "cardCount": {
+          "official": 48,
+          "total": 48
+        },
+        "id": "mfb",
+        "name": "My First Battle"
+      },
+      "updated": "2026-04-14T22:39:39+01:00",
+      "variants": {
+        "firstEdition": false,
+        "holo": false,
+        "normal": true,
+        "reverse": false,
+        "wPromo": false
+      },
+      "variants_detailed": [
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.12,
+              "avg-holo": null,
+              "avg1": 0.1,
+              "avg1-holo": null,
+              "avg30": 0.11,
+              "avg30-holo": null,
+              "avg7": 0.13,
+              "avg7-holo": null,
+              "idProduct": 742022,
+              "low": 0.02,
+              "low-holo": null,
+              "trend": 0.13,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "squirtle"
+          ],
+          "type": "normal",
+          "variantId": "3takscxpcqq42pzkuav61j2v"
+        },
+        {
+          "pricing": {
+            "cardmarket": {
+              "avg": 0.12,
+              "avg-holo": null,
+              "avg1": 0.1,
+              "avg1-holo": null,
+              "avg30": 0.11,
+              "avg30-holo": null,
+              "avg7": 0.13,
+              "avg7-holo": null,
+              "idProduct": 742022,
+              "low": 0.02,
+              "low-holo": null,
+              "trend": 0.13,
+              "trend-holo": 0,
+              "unit": "EUR",
+              "updated": "2026-05-25T00:44:06.000Z"
+            },
+            "tcgplayer": null
+          },
+          "size": "standard",
+          "stamp": [
+            "squirtle",
+            "pokeball"
+          ],
+          "subtype": "blue-border",
+          "type": "normal",
+          "variantId": "6we3u72l9rwd91nyhav5rq6rp12lmbeqwbg9mwf67a4"
+        }
+      ]
+    }
+  ],
+  "downloadedAt": "2026-05-26T00:52:57Z",
+  "failedCardIDs": null,
+  "failedCardIDs_count": 0,
+  "minRegulationMark": "G",
+  "physicalSetCode": "MFB",
+  "set": {
+    "abbreviation": {
+      "official": "MFB"
+    },
+    "cardCount": {
+      "firstEd": 0,
+      "holo": 0,
+      "normal": 48,
+      "official": 48,
+      "reverse": 0,
+      "total": 48
+    },
+    "id": "mfb",
+    "legal": {
+      "expanded": true,
+      "standard": false
+    },
+    "name": "My First Battle",
+    "releaseDate": "2023-09-29",
+    "serie": {
+      "id": "sv",
+      "name": "Scarlet & Violet"
+    }
+  },
+  "source": "https://api.tcgdex.net/v2/en"
+}
